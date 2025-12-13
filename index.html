@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Challenges</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Fuse.js pour la recherche floue -->
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js"></script>
+</head>
+<body>
+    <!-- HUD Fixe -->
+    <div id="hud" class="hud">
+        <div class="hud-content">
+            <div class="score-container">
+                <span class="score-label">Score Global:</span>
+                <span id="global-score" class="score-value">50</span>
+            </div>
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <button id="restart-all-btn" class="btn-restart-global" title="Réinitialiser tous les jeux et le score">🔄 Restart</button>
+                <button id="menu-btn" class="btn-menu" style="display: none;">Menu Principal</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Conteneur Principal -->
+    <div id="app" class="app">
+        <!-- Écran Menu -->
+        <div id="menu-screen" class="screen active">
+            <div class="menu-container">
+                <h1 class="title">Challenges</h1>
+                <p class="subtitle">Choisissez un challenge pour commencer</p>
+                <div id="games-list" class="games-list">
+                    <!-- Les jeux seront ajoutés dynamiquement -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Conteneurs pour les jeux -->
+        <div id="game-container" class="screen">
+            <div id="game-content" class="game-content">
+                <!-- Le contenu du jeu sera injecté ici -->
+            </div>
+        </div>
+
+        <!-- Écran Game Over -->
+        <div id="gameover-screen" class="screen">
+            <div class="gameover-container">
+                <h1 class="gameover-title">💀 Game Over</h1>
+                <p class="gameover-message">Votre score global a atteint 0. Le jeu est bloqué.</p>
+                <button id="reset-btn" class="btn-primary">Réinitialiser le jeu</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="js/core/StorageManager.js"></script>
+    <script src="js/core/GameManager.js"></script>
+    <script src="js/games/GameBase.js"></script>
+    <script src="js/data/peopleData.js"></script>
+    <script src="js/games/FlagGame.js"></script>
+    <script src="js/games/MapGame.js"></script>
+    <script src="js/games/MetroGame.js"></script>
+    <script src="js/games/PeopleGame.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
+
+

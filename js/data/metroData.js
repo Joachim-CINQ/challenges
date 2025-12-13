@@ -1,0 +1,145 @@
+/**
+ * MetroData - Données du métro parisien
+ * Format inspiré de metro-memory.com avec GeoJSON
+ */
+
+// Stations du métro parisien (format simplifié pour commencer)
+// Chaque station a: id, name, alternate_names, line, coordinates (x, y sur la carte SVG)
+const metroStations = [
+    // Ligne 1
+    { id: 1, name: 'La Défense', alternate_names: ['La Defense'], line: '1', x: 50, y: 100 },
+    { id: 2, name: 'Esplanade de La Défense', alternate_names: ['Esplanade de La Defense'], line: '1', x: 80, y: 100 },
+    { id: 3, name: 'Pont de Neuilly', line: '1', x: 110, y: 100 },
+    { id: 4, name: 'Les Sablons', line: '1', x: 140, y: 100 },
+    { id: 5, name: 'Porte Maillot', line: '1', x: 170, y: 100 },
+    { id: 6, name: 'Argentine', line: '1', x: 200, y: 100 },
+    { id: 7, name: 'Charles de Gaulle - Étoile', alternate_names: ['Charles de Gaulle Etoile', 'Étoile', 'Etoile'], line: '1', x: 230, y: 100 },
+    { id: 8, name: 'George V', line: '1', x: 260, y: 100 },
+    { id: 9, name: 'Franklin D. Roosevelt', alternate_names: ['Franklin Roosevelt'], line: '1', x: 290, y: 100 },
+    { id: 10, name: 'Champs-Élysées - Clemenceau', alternate_names: ['Champs Elysees Clemenceau'], line: '1', x: 320, y: 100 },
+    { id: 11, name: 'Concorde', line: '1', x: 350, y: 100 },
+    { id: 12, name: 'Tuileries', line: '1', x: 380, y: 100 },
+    { id: 13, name: 'Palais Royal - Musée du Louvre', alternate_names: ['Palais Royal', 'Louvre'], line: '1', x: 410, y: 100 },
+    { id: 14, name: 'Louvre - Rivoli', alternate_names: ['Louvre Rivoli'], line: '1', x: 440, y: 100 },
+    { id: 15, name: 'Châtelet', line: '1', x: 470, y: 100 },
+    { id: 16, name: 'Hôtel de Ville', alternate_names: ['Hotel de Ville'], line: '1', x: 500, y: 100 },
+    { id: 17, name: 'Saint-Paul', alternate_names: ['Saint Paul'], line: '1', x: 530, y: 100 },
+    { id: 18, name: 'Bastille', line: '1', x: 560, y: 100 },
+    { id: 19, name: 'Gare de Lyon', line: '1', x: 590, y: 100 },
+    { id: 20, name: 'Reuilly - Diderot', alternate_names: ['Reuilly Diderot'], line: '1', x: 620, y: 100 },
+    { id: 21, name: 'Nation', line: '1', x: 650, y: 100 },
+    { id: 22, name: 'Porte de Vincennes', line: '1', x: 680, y: 100 },
+    { id: 23, name: 'Saint-Mandé', alternate_names: ['Saint Mande'], line: '1', x: 710, y: 100 },
+    { id: 24, name: 'Bérault', line: '1', x: 740, y: 100 },
+    { id: 25, name: 'Château de Vincennes', alternate_names: ['Chateau de Vincennes'], line: '1', x: 770, y: 100 },
+    
+    // Ligne 2
+    { id: 26, name: 'Porte Dauphine', line: '2', x: 50, y: 150 },
+    { id: 27, name: 'Victor Hugo', line: '2', x: 80, y: 150 },
+    { id: 28, name: 'Charles de Gaulle - Étoile', alternate_names: ['Charles de Gaulle Etoile', 'Étoile', 'Etoile'], line: '2', x: 230, y: 150 },
+    { id: 29, name: 'Ternes', line: '2', x: 260, y: 150 },
+    { id: 30, name: 'Courcelles', line: '2', x: 290, y: 150 },
+    { id: 31, name: 'Monceau', line: '2', x: 320, y: 150 },
+    { id: 32, name: 'Villiers', line: '2', x: 350, y: 150 },
+    { id: 33, name: 'Rome', line: '2', x: 380, y: 150 },
+    { id: 34, name: 'Place de Clichy', line: '2', x: 410, y: 150 },
+    { id: 35, name: 'Blanche', line: '2', x: 440, y: 150 },
+    { id: 36, name: 'Pigalle', line: '2', x: 470, y: 150 },
+    { id: 37, name: 'Anvers', line: '2', x: 500, y: 150 },
+    { id: 38, name: 'Barbès - Rochechouart', alternate_names: ['Barbes Rochechouart'], line: '2', x: 530, y: 150 },
+    { id: 39, name: 'La Chapelle', line: '2', x: 560, y: 150 },
+    { id: 40, name: 'Stalingrad', line: '2', x: 590, y: 150 },
+    { id: 41, name: 'Jaurès', line: '2', x: 620, y: 150 },
+    { id: 42, name: 'Colonel Fabien', line: '2', x: 650, y: 150 },
+    { id: 43, name: 'Belleville', line: '2', x: 680, y: 150 },
+    { id: 44, name: 'Couronnes', line: '2', x: 710, y: 150 },
+    { id: 45, name: 'Ménilmontant', alternate_names: ['Menilmontant'], line: '2', x: 740, y: 150 },
+    { id: 46, name: 'Père Lachaise', alternate_names: ['Pere Lachaise'], line: '2', x: 770, y: 150 },
+    { id: 47, name: 'Philippe Auguste', line: '2', x: 800, y: 150 },
+    { id: 48, name: 'Alexandre Dumas', line: '2', x: 830, y: 150 },
+    { id: 49, name: 'Avron', line: '2', x: 860, y: 150 },
+    { id: 50, name: 'Nation', line: '2', x: 650, y: 150 },
+    
+    // Ligne 3
+    { id: 51, name: 'Pont de Levallois - Bécon', alternate_names: ['Pont de Levallois Becon'], line: '3', x: 50, y: 200 },
+    { id: 52, name: 'Anatole France', line: '3', x: 80, y: 200 },
+    { id: 53, name: 'Louise Michel', line: '3', x: 110, y: 200 },
+    { id: 54, name: 'Porte de Champerret', line: '3', x: 140, y: 200 },
+    { id: 55, name: 'Pereire', line: '3', x: 170, y: 200 },
+    { id: 56, name: 'Wagram', line: '3', x: 200, y: 200 },
+    { id: 57, name: 'Malesherbes', line: '3', x: 230, y: 200 },
+    { id: 58, name: 'Villiers', line: '3', x: 350, y: 200 },
+    { id: 59, name: 'Europe', line: '3', x: 380, y: 200 },
+    { id: 60, name: 'Saint-Lazare', alternate_names: ['Saint Lazare'], line: '3', x: 410, y: 200 },
+    { id: 61, name: 'Havre - Caumartin', alternate_names: ['Havre Caumartin'], line: '3', x: 440, y: 200 },
+    { id: 62, name: 'Opéra', alternate_names: ['Opera'], line: '3', x: 470, y: 200 },
+    { id: 63, name: 'Quatre-Septembre', alternate_names: ['Quatre Septembre'], line: '3', x: 500, y: 200 },
+    { id: 64, name: 'Bourse', line: '3', x: 530, y: 200 },
+    { id: 65, name: 'Sentier', line: '3', x: 560, y: 200 },
+    { id: 66, name: 'Réaumur - Sébastopol', alternate_names: ['Reaumur Sebastopol'], line: '3', x: 590, y: 200 },
+    { id: 67, name: 'Arts et Métiers', alternate_names: ['Arts et Metiers'], line: '3', x: 620, y: 200 },
+    { id: 68, name: 'Temple', line: '3', x: 650, y: 200 },
+    { id: 69, name: 'République', alternate_names: ['Republique'], line: '3', x: 680, y: 200 },
+    { id: 70, name: 'Parmentier', line: '3', x: 710, y: 200 },
+    { id: 71, name: 'Rue Saint-Maur', alternate_names: ['Rue Saint Maur'], line: '3', x: 740, y: 200 },
+    { id: 72, name: 'Père Lachaise', alternate_names: ['Pere Lachaise'], line: '3', x: 770, y: 200 },
+    { id: 73, name: 'Gambetta', line: '3', x: 800, y: 200 },
+    { id: 74, name: 'Porte de Bagnolet', line: '3', x: 830, y: 200 },
+    { id: 75, name: 'Gallieni', line: '3', x: 860, y: 200 },
+    
+    // Ajoutons quelques stations clés des autres lignes pour avoir un jeu complet
+    // Ligne 4
+    { id: 76, name: 'Porte de Clignancourt', line: '4', x: 50, y: 250 },
+    { id: 77, name: 'Simplon', line: '4', x: 80, y: 250 },
+    { id: 78, name: 'Marcadet - Poissonniers', alternate_names: ['Marcadet Poissonniers'], line: '4', x: 110, y: 250 },
+    { id: 79, name: 'Château Rouge', alternate_names: ['Chateau Rouge'], line: '4', x: 140, y: 250 },
+    { id: 80, name: 'Barbès - Rochechouart', alternate_names: ['Barbes Rochechouart'], line: '4', x: 530, y: 250 },
+    { id: 81, name: 'Gare du Nord', line: '4', x: 560, y: 250 },
+    { id: 82, name: 'Gare de l\'Est', alternate_names: ['Gare de lEst'], line: '4', x: 590, y: 250 },
+    { id: 83, name: 'Château d\'Eau', alternate_names: ['Chateau dEau'], line: '4', x: 620, y: 250 },
+    { id: 84, name: 'Strasbourg - Saint-Denis', alternate_names: ['Strasbourg Saint Denis'], line: '4', x: 650, y: 250 },
+    { id: 85, name: 'Réaumur - Sébastopol', alternate_names: ['Reaumur Sebastopol'], line: '4', x: 590, y: 250 },
+    { id: 86, name: 'Étienne Marcel', alternate_names: ['Etienne Marcel'], line: '4', x: 680, y: 250 },
+    { id: 87, name: 'Les Halles', line: '4', x: 710, y: 250 },
+    { id: 88, name: 'Châtelet', line: '4', x: 470, y: 250 },
+    { id: 89, name: 'Cité', alternate_names: ['Cite'], line: '4', x: 500, y: 250 },
+    { id: 90, name: 'Saint-Michel', alternate_names: ['Saint Michel'], line: '4', x: 530, y: 250 },
+    { id: 91, name: 'Odéon', alternate_names: ['Odeon'], line: '4', x: 560, y: 250 },
+    { id: 92, name: 'Saint-Germain-des-Prés', alternate_names: ['Saint Germain des Pres'], line: '4', x: 590, y: 250 },
+    { id: 93, name: 'Saint-Sulpice', alternate_names: ['Saint Sulpice'], line: '4', x: 620, y: 250 },
+    { id: 94, name: 'Saint-Placide', line: '4', x: 650, y: 250 },
+    { id: 95, name: 'Montparnasse - Bienvenüe', alternate_names: ['Montparnasse Bienvenue'], line: '4', x: 680, y: 250 },
+    { id: 96, name: 'Vavin', line: '4', x: 710, y: 250 },
+    { id: 97, name: 'Raspail', line: '4', x: 740, y: 250 },
+    { id: 98, name: 'Denfert-Rochereau', line: '4', x: 770, y: 250 },
+    { id: 99, name: 'Mouton-Duvernet', line: '4', x: 800, y: 250 },
+    { id: 100, name: 'Alésia', alternate_names: ['Alesia'], line: '4', x: 830, y: 250 },
+    { id: 101, name: 'Porte d\'Orléans', alternate_names: ['Porte dOrleans'], line: '4', x: 860, y: 250 },
+    { id: 102, name: 'Mairie de Montrouge', line: '4', x: 890, y: 250 },
+];
+
+// Lignes du métro avec leurs couleurs
+const metroLines = {
+    '1': { name: 'Ligne 1', color: '#FFCD00' },
+    '2': { name: 'Ligne 2', color: '#003CA6' },
+    '3': { name: 'Ligne 3', color: '#837902' },
+    '3b': { name: 'Ligne 3bis', color: '#6EC4E8' },
+    '4': { name: 'Ligne 4', color: '#CF009E' },
+    '5': { name: 'Ligne 5', color: '#FF7E2E' },
+    '6': { name: 'Ligne 6', color: '#6ECA97' },
+    '7': { name: 'Ligne 7', color: '#FA9ABA' },
+    '7b': { name: 'Ligne 7bis', color: '#6ECA97' },
+    '8': { name: 'Ligne 8', color: '#E19BDF' },
+    '9': { name: 'Ligne 9', color: '#B6BD00' },
+    '10': { name: 'Ligne 10', color: '#C9910D' },
+    '11': { name: 'Ligne 11', color: '#704B1C' },
+    '12': { name: 'Ligne 12', color: '#007852' },
+    '13': { name: 'Ligne 13', color: '#6EC4E8' },
+    '14': { name: 'Ligne 14', color: '#62259D' }
+};
+
+// Export pour utilisation dans MetroGame
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { metroStations, metroLines };
+}
+

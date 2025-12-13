@@ -1,0 +1,53 @@
+/**
+ * main.js - Point d'entrée de l'application
+ * Initialise le GameManager et enregistre tous les jeux
+ */
+
+// Initialisation au chargement de la page
+document.addEventListener('DOMContentLoaded', () => {
+    // Créer l'instance globale du GameManager
+    gameManager = new GameManager();
+
+    // Créer et enregistrer le jeu FlagGame
+    const flagGame = new FlagGame();
+    flagGame.init();
+    gameManager.registerGame('flags', flagGame);
+
+    // Exposer flagGame globalement pour les callbacks onclick et pour MapGame
+    window.flagGame = flagGame;
+
+    // Créer et enregistrer le jeu MapGame
+    const mapGame = new MapGame();
+    mapGame.init();
+    gameManager.registerGame('map', mapGame);
+
+    // Exposer mapGame globalement pour les callbacks onclick
+    window.mapGame = mapGame;
+
+    // Créer et enregistrer le jeu MetroGame
+    const metroGame = new MetroGame();
+    metroGame.init();
+    gameManager.registerGame('metro', metroGame);
+
+    // Exposer metroGame globalement pour les callbacks onclick
+    window.metroGame = metroGame;
+
+    // Créer et enregistrer le jeu PeopleGame
+    const peopleGame = new PeopleGame();
+    // init() est async pour charger les images, on l'appelle mais on n'attend pas
+    peopleGame.init().catch(err => {
+        console.error('Erreur lors de l\'initialisation de PeopleGame:', err);
+    });
+    gameManager.registerGame('people', peopleGame);
+
+    // Exposer peopleGame globalement pour les callbacks onclick
+    window.peopleGame = peopleGame;
+
+    // Mettre à jour le menu pour afficher les jeux enregistrés
+    gameManager.showMenu();
+
+    console.log('🎯 Challenges initialisé !');
+    console.log('Jeux enregistrés:', gameManager.games.size);
+});
+
+

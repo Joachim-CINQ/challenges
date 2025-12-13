@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 2000" width="2000" height="2000">
+  <!-- Fond -->
+  <rect width="2000" height="2000" fill="#1a1f3a"/>
+  
+  <!-- Ligne 1 (Jaune) -->
+  <g id="line-1" stroke="#FFCD00" stroke-width="8" fill="none">
+    <path d="M 200 1000 L 400 1000 L 600 1000 L 800 1000 L 1000 1000 L 1200 1000 L 1400 1000 L 1600 1000 L 1800 1000"/>
+  </g>
+  
+  <!-- Ligne 2 (Bleu) -->
+  <g id="line-2" stroke="#003CA6" stroke-width="8" fill="none">
+    <path d="M 300 200 L 500 200 L 700 200 L 900 200 L 1100 200 L 1300 200 L 1500 200 L 1700 200"/>
+  </g>
+  
+  <!-- Ligne 3 (Vert olive) -->
+  <g id="line-3" stroke="#837902" stroke-width="8" fill="none">
+    <path d="M 200 300 L 400 300 L 600 300 L 800 300 L 1000 300 L 1200 300 L 1400 300 L 1600 300 L 1800 300"/>
+  </g>
+  
+  <!-- Ligne 4 (Rose) -->
+  <g id="line-4" stroke="#CF009E" stroke-width="8" fill="none">
+    <path d="M 300 400 L 500 400 L 700 400 L 900 400 L 1100 400 L 1300 400 L 1500 400 L 1700 400"/>
+  </g>
+  
+  <!-- Ligne 5 (Orange) -->
+  <g id="line-5" stroke="#FF7E2E" stroke-width="8" fill="none">
+    <path d="M 200 500 L 400 500 L 600 500 L 800 500 L 1000 500 L 1200 500 L 1400 500 L 1600 500 L 1800 500"/>
+  </g>
+  
+  <!-- Ligne 6 (Vert clair) -->
+  <g id="line-6" stroke="#6ECA97" stroke-width="8" fill="none">
+    <path d="M 300 600 L 500 600 L 700 600 L 900 600 L 1100 600 L 1300 600 L 1500 600 L 1700 600"/>
+  </g>
+  
+  <!-- Ligne 7 (Rose clair) -->
+  <g id="line-7" stroke="#FA9ABA" stroke-width="8" fill="none">
+    <path d="M 200 700 L 400 700 L 600 700 L 800 700 L 1000 700 L 1200 700 L 1400 700 L 1600 700 L 1800 700"/>
+  </g>
+  
+  <!-- Ligne 8 (Violet clair) -->
+  <g id="line-8" stroke="#E19BDF" stroke-width="8" fill="none">
+    <path d="M 300 800 L 500 800 L 700 800 L 900 800 L 1100 800 L 1300 800 L 1500 800 L 1700 800"/>
+  </g>
+  
+  <!-- Ligne 9 (Jaune-vert) -->
+  <g id="line-9" stroke="#B6BD00" stroke-width="8" fill="none">
+    <path d="M 200 900 L 400 900 L 600 900 L 800 900 L 1000 900 L 1200 900 L 1400 900 L 1600 900 L 1800 900"/>
+  </g>
+  
+  <!-- Ligne 10 (Marron) -->
+  <g id="line-10" stroke="#C9910D" stroke-width="8" fill="none">
+    <path d="M 300 1100 L 500 1100 L 700 1100 L 900 1100 L 1100 1100 L 1300 1100"/>
+  </g>
+  
+  <!-- Ligne 11 (Marron foncé) -->
+  <g id="line-11" stroke="#704B1C" stroke-width="8" fill="none">
+    <path d="M 800 1200 L 1000 1200 L 1200 1200 L 1400 1200 L 1600 1200"/>
+  </g>
+  
+  <!-- Ligne 12 (Vert foncé) -->
+  <g id="line-12" stroke="#007852" stroke-width="8" fill="none">
+    <path d="M 200 1300 L 400 1300 L 600 1300 L 800 1300 L 1000 1300 L 1200 1300 L 1400 1300 L 1600 1300 L 1800 1300"/>
+  </g>
+  
+  <!-- Ligne 13 (Bleu clair) -->
+  <g id="line-13" stroke="#6EC4E8" stroke-width="8" fill="none">
+    <path d="M 300 1400 L 500 1400 L 700 1400 L 900 1400 L 1100 1400 L 1300 1400 L 1500 1400"/>
+  </g>
+  
+  <!-- Ligne 14 (Violet) -->
+  <g id="line-14" stroke="#62259D" stroke-width="8" fill="none">
+    <path d="M 200 1500 L 400 1500 L 600 1500 L 800 1500 L 1000 1500 L 1200 1500 L 1400 1500"/>
+  </g>
+  
+  <!-- Stations - Ligne 1 -->
+  <circle id="1-La Défense" cx="200" cy="1000" r="12" fill="#FFCD00" stroke="#fff" stroke-width="2"/>
+  <circle id="1-Châtelet" cx="1000" cy="1000" r="12" fill="#FFCD00" stroke="#fff" stroke-width="2"/>
+  <circle id="1-Nation" cx="1400" cy="1000" r="12" fill="#FFCD00" stroke="#fff" stroke-width="2"/>
+  <circle id="1-Château de Vincennes" cx="1800" cy="1000" r="12" fill="#FFCD00" stroke="#fff" stroke-width="2"/>
+  
+  <!-- Stations - Ligne 2 -->
+  <circle id="2-Porte Dauphine" cx="300" cy="200" r="12" fill="#003CA6" stroke="#fff" stroke-width="2"/>
+  <circle id="2-Charles de Gaulle - Étoile" cx="700" cy="200" r="12" fill="#003CA6" stroke="#fff" stroke-width="2"/>
+  <circle id="2-Nation" cx="1700" cy="200" r="12" fill="#003CA6" stroke="#fff" stroke-width="2"/>
+  
+  <!-- Stations - Ligne 3 -->
+  <circle id="3-Pont de Levallois - Bécon" cx="200" cy="300" r="12" fill="#837902" stroke="#fff" stroke-width="2"/>
+  <circle id="3-République" cx="1200" cy="300" r="12" fill="#837902" stroke="#fff" stroke-width="2"/>
+  <circle id="3-Gallieni" cx="1800" cy="300" r="12" fill="#837902" stroke="#fff" stroke-width="2"/>
+  
+  <!-- Stations - Ligne 4 -->
+  <circle id="4-Porte de Clignancourt" cx="300" cy="400" r="12" fill="#CF009E" stroke="#fff" stroke-width="2"/>
+  <circle id="4-Châtelet" cx="900" cy="400" r="12" fill="#CF009E" stroke="#fff" stroke-width="2"/>
+  <circle id="4-Mairie de Montrouge" cx="1700" cy="400" r="12" fill="#CF009E" stroke="#fff" stroke-width="2"/>
+  
+  <!-- Stations - Ligne 5 -->
+  <circle id="5-Bobigny - Pablo Picasso" cx="200" cy="500" r="12" fill="#FF7E2E" stroke="#fff" stroke-width="2"/>
+  <circle id="5-Gare du Nord" cx="800" cy="500" r="12" fill="#FF7E2E" stroke="#fff" stroke-width="2"/>
+  <circle id="5-Olympiades" cx="1800" cy="500" r="12" fill="#FF7E2E" stroke="#fff" stroke-width="2"/>
+  
+  <!-- Stations - Ligne 6 -->
+  <circle id="6-Charles de Gaulle - Étoile" cx="300" cy="600" r="12" fill="#6ECA97" stroke="#fff" stroke-width="2"/>
+  <circle id="6-Montparnasse - Bienvenüe" cx="1100" cy="600" r="12" fill="#6ECA97" stroke="#fff" stroke-width="2"/>
+  <circle id="6-Nation" cx="1700" cy="600" r="12" fill="#6ECA97" stroke="#fff" stroke-width="2"/>
+  
+  <!-- Stations - Ligne 7 -->
+  <circle id="7-La Courneuve - 8 Mai 1945" cx="200" cy="700" r="12" fill="#FA9ABA" stroke="#fff" stroke-width="2"/>
+  <circle id="7-Châtelet" cx="1000" cy="700" r="12" fill="#FA9ABA" stroke="#fff" stroke-width="2"/>
+  <circle id="7-Villejuif - Louis Aragon" cx="1800" cy="700" r="12" fill="#FA9ABA" stroke="#fff" stroke-width="2"/>
+  
+  <!-- Stations - Ligne 8 -->
+  <circle id="8-Balard" cx="300" cy="800" r="12" fill="#E19BDF" stroke="#fff" stroke-width="2"/>
+  <circle id="8-République" cx="1200" cy="800" r="12" fill="#E19BDF" stroke="#fff" stroke-width="2"/>
+  <circle id="8-Pointe du Lac" cx="1700" cy="800" r="12" fill="#E19BDF" stroke="#fff" stroke-width="2"/>
+  
+  <!-- Stations - Ligne 9 -->
+  <circle id="9-Pont de Sèvres" cx="200" cy="900" r="12" fill="#B6BD00" stroke="#fff" stroke-width="2"/>
+  <circle id="9-République" cx="1200" cy="900" r="12" fill="#B6BD00" stroke="#fff" stroke-width="2"/>
+  <circle id="9-Porte de Montreuil" cx="1700" cy="900" r="12" fill="#B6BD00" stroke="#fff" stroke-width="2"/>
+  
+  <!-- Stations - Ligne 10 -->
+  <circle id="10-Boulogne - Pont de Saint-Cloud" cx="300" cy="1100" r="12" fill="#C9910D" stroke="#fff" stroke-width="2"/>
+  <circle id="10-Gare d'Austerlitz" cx="1300" cy="1100" r="12" fill="#C9910D" stroke="#fff" stroke-width="2"/>
+  
+  <!-- Stations - Ligne 11 -->
+  <circle id="11-Châtelet" cx="800" cy="1200" r="12" fill="#704B1C" stroke="#fff" stroke-width="2"/>
+  <circle id="11-Mairie des Lilas" cx="1600" cy="1200" r="12" fill="#704B1C" stroke="#fff" stroke-width="2"/>
+  
+  <!-- Stations - Ligne 12 -->
+  <circle id="12-Mairie d'Aubervilliers" cx="200" cy="1300" r="12" fill="#007852" stroke="#fff" stroke-width="2"/>
+  <circle id="12-Montparnasse - Bienvenüe" cx="1100" cy="1300" r="12" fill="#007852" stroke="#fff" stroke-width="2"/>
+  <circle id="12-Mairie d'Issy" cx="1800" cy="1300" r="12" fill="#007852" stroke="#fff" stroke-width="2"/>
+  
+  <!-- Stations - Ligne 13 -->
+  <circle id="13-Les Courtilles" cx="300" cy="1400" r="12" fill="#6EC4E8" stroke="#fff" stroke-width="2"/>
+  <circle id="13-Montparnasse - Bienvenüe" cx="1100" cy="1400" r="12" fill="#6EC4E8" stroke="#fff" stroke-width="2"/>
+  <circle id="13-Châtillon - Montrouge" cx="1500" cy="1400" r="12" fill="#6EC4E8" stroke="#fff" stroke-width="2"/>
+  
+  <!-- Stations - Ligne 14 -->
+  <circle id="14-Mairie de Saint-Ouen" cx="200" cy="1500" r="12" fill="#62259D" stroke="#fff" stroke-width="2"/>
+  <circle id="14-Châtelet" cx="800" cy="1500" r="12" fill="#62259D" stroke="#fff" stroke-width="2"/>
+  <circle id="14-Olympiades" cx="1400" cy="1500" r="12" fill="#62259D" stroke="#fff" stroke-width="2"/>
+  
+  <!-- Note: Cette carte est simplifiée. Pour une vraie carte, il faudrait positionner toutes les stations précisément -->
+</svg>
+
+
+
