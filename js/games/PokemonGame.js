@@ -29,17 +29,47 @@ class PokemonGame extends GameBase {
      */
     async fetchPokemonData(id) {
         try {
-            const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}/`);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+            // Récupérer les données du Pokémon
+            const pokemonResponse = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}/`);
+            if (!pokemonResponse.ok) {
+                throw new Error(`HTTP error! status: ${pokemonResponse.status}`);
             }
-            const data = await response.json();
+            const pokemonData = await pokemonResponse.json();
+            
+            // Récupérer les données de l'espèce pour obtenir le nom français
+            const speciesResponse = await fetch(pokemonData.species.url);
+            if (!speciesResponse.ok) {
+                throw new Error(`HTTP error! status: ${speciesResponse.status}`);
+            }
+            const speciesData = await speciesResponse.json();
+            
+            // Trouver le nom français
+            const frenchName = speciesData.names.find(name => name.language.name === 'fr');
+            const displayName = frenchName ? frenchName.name : this.capitalizeFirst(pokemonData.name);
+            const englishName = this.capitalizeFirst(pokemonData.name);
+            
+            // Construire la liste des noms alternatifs (anglais + autres variantes)
+            // Utiliser un Set pour éviter les doublons
+            const altNamesSet = new Set([englishName]);
+            
+            // Ajouter le nom français s'il est différent du nom d'affichage
+            if (frenchName && frenchName.name !== displayName) {
+                altNamesSet.add(frenchName.name);
+            }
+            
+            // Ajouter les noms alternatifs depuis getAltNames (pour les cas où l'API n'a pas le nom français)
+            const additionalAltNames = this.getAltNames(pokemonData.name);
+            additionalAltNames.forEach(name => altNamesSet.add(name));
+            
+            // Convertir en tableau et retirer le nom d'affichage s'il est présent
+            const altNames = Array.from(altNamesSet).filter(name => name !== displayName);
             
             return {
-                id: data.id,
-                name: this.capitalizeFirst(data.name),
-                imageUrl: data.sprites.front_default || data.sprites.other?.['official-artwork']?.front_default,
-                altNames: this.getAltNames(data.name)
+                id: pokemonData.id,
+                name: displayName, // Nom français par défaut
+                englishName: englishName, // Garder le nom anglais pour référence
+                imageUrl: pokemonData.sprites.front_default || pokemonData.sprites.other?.['official-artwork']?.front_default,
+                altNames: altNames
             };
         } catch (error) {
             console.error(`Erreur pour le Pokémon ${id}:`, error);
