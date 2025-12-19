@@ -43,6 +43,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // Exposer peopleGame globalement pour les callbacks onclick
     window.peopleGame = peopleGame;
 
+    // Créer et enregistrer le jeu PokemonGame
+    const pokemonGame = new PokemonGame();
+    // init() est async pour charger les données depuis l'API, on l'appelle mais on n'attend pas
+    pokemonGame.init().catch(err => {
+        console.error('Erreur lors de l\'initialisation de PokemonGame:', err);
+    });
+    gameManager.registerGame('pokemon', pokemonGame);
+
+    // Exposer pokemonGame globalement pour les callbacks onclick
+    window.pokemonGame = pokemonGame;
+
     // Mettre à jour le menu pour afficher les jeux enregistrés
     gameManager.showMenu();
 
