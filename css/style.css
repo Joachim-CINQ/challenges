@@ -1167,7 +1167,7 @@ body {
 
 .map-container path {
     stroke: #333333;
-    stroke-width: 0.2;
+    stroke-width: 0.3;
     fill: #e8e8e8;
     transition: fill 0.3s ease, opacity 0.3s ease;
     pointer-events: all; /* S'assurer que les paths sont cliquables */
@@ -1176,7 +1176,7 @@ body {
 
 /* Augmenter la zone cliquable pour les petits pays */
 .map-container path[id] {
-    stroke-width: 0.2;
+    stroke-width: 0.3;
 }
 
 /* Style spécial pour les très petits pays (comme Monaco) */
