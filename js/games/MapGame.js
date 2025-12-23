@@ -129,11 +129,18 @@ class MapGame extends GameBase {
             }
             
             // Envelopper le SVG dans un conteneur pour le zoom/pan
+            // Ajouter un style pour colorer les océans en bleu
             mapContainer.innerHTML = `
                 <div class="svg-wrapper" id="svg-wrapper">
                     ${svgText}
                 </div>
             `;
+            
+            // Colorer le fond du SVG (océans) en bleu
+            const svgElement = mapContainer.querySelector('#svg-wrapper svg');
+            if (svgElement) {
+                svgElement.style.backgroundColor = '#a8d5f5'; // Bleu clair pour les océans
+            }
             
             // Initialiser le zoom et pan
             this.initZoomPan();
@@ -389,9 +396,13 @@ class MapGame extends GameBase {
     attachMapListeners() {
         const paths = document.querySelectorAll('#svg-wrapper path[id]');
         
+        // Liste des très petits pays qui ont besoin d'une zone cliquable plus grande
+        const smallCountries = ['AD', 'MC', 'VA', 'SM', 'LI'];
+        
         paths.forEach(path => {
             const countryCode = path.getAttribute('id');
             const isPlaced = this.placedCountries.includes(countryCode);
+            const isSmallCountry = smallCountries.includes(countryCode);
             
             // Style visuel pour les pays placés
             if (isPlaced) {
@@ -402,8 +413,15 @@ class MapGame extends GameBase {
                 path.style.cursor = 'default';
             } else {
                 path.style.fill = '#e8e8e8';
-                path.style.stroke = '#333333';
-                path.style.strokeWidth = '0.3';
+                // Pour les petits pays, utiliser un stroke plus épais avec une couleur très proche du fond
+                // pour améliorer la cliquabilité sans trop l'afficher
+                if (isSmallCountry) {
+                    path.style.stroke = '#d0d0d0'; // Couleur très proche du fond
+                    path.style.strokeWidth = '4'; // Stroke épais pour une meilleure cliquabilité
+                } else {
+                    path.style.stroke = '#333333';
+                    path.style.strokeWidth = '0.3';
+                }
                 path.style.opacity = '1';
                 path.style.cursor = 'pointer';
                 path.style.transition = 'all 0.3s ease';
@@ -436,7 +454,12 @@ class MapGame extends GameBase {
                     if (this.selectedCountry) {
                         path.style.fill = '#8b6f47';
                         path.style.stroke = '#5a4a2f';
-                        path.style.strokeWidth = '2';
+                        // Pour les petits pays, garder un stroke plus épais même au hover
+                        if (isSmallCountry) {
+                            path.style.strokeWidth = '5';
+                        } else {
+                            path.style.strokeWidth = '2';
+                        }
                         path.style.opacity = '0.8';
                     }
                 });
@@ -444,8 +467,14 @@ class MapGame extends GameBase {
                 path.addEventListener('mouseleave', () => {
                     if (this.selectedCountry && !isPlaced) {
                         path.style.fill = '#e8e8e8';
-                        path.style.stroke = '#333333';
-                        path.style.strokeWidth = '0.3';
+                        // Restaurer le stroke approprié selon la taille du pays
+                        if (isSmallCountry) {
+                            path.style.stroke = '#d0d0d0';
+                            path.style.strokeWidth = '4';
+                        } else {
+                            path.style.stroke = '#333333';
+                            path.style.strokeWidth = '0.3';
+                        }
                         path.style.opacity = '1';
                     }
                 });

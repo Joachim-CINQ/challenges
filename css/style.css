@@ -1180,13 +1180,18 @@ body {
 }
 
 /* Style spécial pour les très petits pays (comme Monaco) */
+/* Note: Le stroke-width est géré dans le JavaScript pour une meilleure cliquabilité */
 .map-container path[id="MC"],
 .map-container path[id="VA"],
 .map-container path[id="SM"],
 .map-container path[id="LI"],
 .map-container path[id="AD"] {
-    stroke-width: 2;
-    stroke: var(--accent-primary);
+    /* Le stroke-width sera défini dans le JavaScript */
+}
+
+/* Colorer les océans (fond du SVG) en bleu */
+.svg-wrapper svg {
+    background-color: #a8d5f5;
 }
 
 .map-instructions {
