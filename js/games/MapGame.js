@@ -403,7 +403,7 @@ class MapGame extends GameBase {
             } else {
                 path.style.fill = '#e8e8e8';
                 path.style.stroke = '#333333';
-                path.style.strokeWidth = '0.8';
+                path.style.strokeWidth = '0.3';
                 path.style.opacity = '1';
                 path.style.cursor = 'pointer';
                 path.style.transition = 'all 0.3s ease';
@@ -445,7 +445,7 @@ class MapGame extends GameBase {
                     if (this.selectedCountry && !isPlaced) {
                         path.style.fill = '#e8e8e8';
                         path.style.stroke = '#333333';
-                        path.style.strokeWidth = '0.8';
+                        path.style.strokeWidth = '0.3';
                         path.style.opacity = '1';
                     }
                 });
