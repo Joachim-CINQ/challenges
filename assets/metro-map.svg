@@ -4,72 +4,72 @@
   <rect width="2000" height="2000" fill="#1a1f3a"/>
   
   <!-- Ligne 1 (Jaune) -->
-  <g id="line-1" stroke="#FFCD00" stroke-width="8" fill="none">
+  <g id="line-1" stroke="#FFCD00" stroke-width="2" fill="none">
     <path d="M 200 1000 L 400 1000 L 600 1000 L 800 1000 L 1000 1000 L 1200 1000 L 1400 1000 L 1600 1000 L 1800 1000"/>
   </g>
   
   <!-- Ligne 2 (Bleu) -->
-  <g id="line-2" stroke="#003CA6" stroke-width="8" fill="none">
+  <g id="line-2" stroke="#003CA6" stroke-width="2" fill="none">
     <path d="M 300 200 L 500 200 L 700 200 L 900 200 L 1100 200 L 1300 200 L 1500 200 L 1700 200"/>
   </g>
   
   <!-- Ligne 3 (Vert olive) -->
-  <g id="line-3" stroke="#837902" stroke-width="8" fill="none">
+  <g id="line-3" stroke="#837902" stroke-width="2" fill="none">
     <path d="M 200 300 L 400 300 L 600 300 L 800 300 L 1000 300 L 1200 300 L 1400 300 L 1600 300 L 1800 300"/>
   </g>
   
   <!-- Ligne 4 (Rose) -->
-  <g id="line-4" stroke="#CF009E" stroke-width="8" fill="none">
+  <g id="line-4" stroke="#CF009E" stroke-width="2" fill="none">
     <path d="M 300 400 L 500 400 L 700 400 L 900 400 L 1100 400 L 1300 400 L 1500 400 L 1700 400"/>
   </g>
   
   <!-- Ligne 5 (Orange) -->
-  <g id="line-5" stroke="#FF7E2E" stroke-width="8" fill="none">
+  <g id="line-5" stroke="#FF7E2E" stroke-width="2" fill="none">
     <path d="M 200 500 L 400 500 L 600 500 L 800 500 L 1000 500 L 1200 500 L 1400 500 L 1600 500 L 1800 500"/>
   </g>
   
   <!-- Ligne 6 (Vert clair) -->
-  <g id="line-6" stroke="#6ECA97" stroke-width="8" fill="none">
+  <g id="line-6" stroke="#6ECA97" stroke-width="2" fill="none">
     <path d="M 300 600 L 500 600 L 700 600 L 900 600 L 1100 600 L 1300 600 L 1500 600 L 1700 600"/>
   </g>
   
   <!-- Ligne 7 (Rose clair) -->
-  <g id="line-7" stroke="#FA9ABA" stroke-width="8" fill="none">
+  <g id="line-7" stroke="#FA9ABA" stroke-width="2" fill="none">
     <path d="M 200 700 L 400 700 L 600 700 L 800 700 L 1000 700 L 1200 700 L 1400 700 L 1600 700 L 1800 700"/>
   </g>
   
   <!-- Ligne 8 (Violet clair) -->
-  <g id="line-8" stroke="#E19BDF" stroke-width="8" fill="none">
+  <g id="line-8" stroke="#E19BDF" stroke-width="2" fill="none">
     <path d="M 300 800 L 500 800 L 700 800 L 900 800 L 1100 800 L 1300 800 L 1500 800 L 1700 800"/>
   </g>
   
   <!-- Ligne 9 (Jaune-vert) -->
-  <g id="line-9" stroke="#B6BD00" stroke-width="8" fill="none">
+  <g id="line-9" stroke="#B6BD00" stroke-width="2" fill="none">
     <path d="M 200 900 L 400 900 L 600 900 L 800 900 L 1000 900 L 1200 900 L 1400 900 L 1600 900 L 1800 900"/>
   </g>
   
   <!-- Ligne 10 (Marron) -->
-  <g id="line-10" stroke="#C9910D" stroke-width="8" fill="none">
+  <g id="line-10" stroke="#C9910D" stroke-width="2" fill="none">
     <path d="M 300 1100 L 500 1100 L 700 1100 L 900 1100 L 1100 1100 L 1300 1100"/>
   </g>
   
   <!-- Ligne 11 (Marron foncé) -->
-  <g id="line-11" stroke="#704B1C" stroke-width="8" fill="none">
+  <g id="line-11" stroke="#704B1C" stroke-width="2" fill="none">
     <path d="M 800 1200 L 1000 1200 L 1200 1200 L 1400 1200 L 1600 1200"/>
   </g>
   
   <!-- Ligne 12 (Vert foncé) -->
-  <g id="line-12" stroke="#007852" stroke-width="8" fill="none">
+  <g id="line-12" stroke="#007852" stroke-width="2" fill="none">
     <path d="M 200 1300 L 400 1300 L 600 1300 L 800 1300 L 1000 1300 L 1200 1300 L 1400 1300 L 1600 1300 L 1800 1300"/>
   </g>
   
   <!-- Ligne 13 (Bleu clair) -->
-  <g id="line-13" stroke="#6EC4E8" stroke-width="8" fill="none">
+  <g id="line-13" stroke="#6EC4E8" stroke-width="2" fill="none">
     <path d="M 300 1400 L 500 1400 L 700 1400 L 900 1400 L 1100 1400 L 1300 1400 L 1500 1400"/>
   </g>
   
   <!-- Ligne 14 (Violet) -->
-  <g id="line-14" stroke="#62259D" stroke-width="8" fill="none">
+  <g id="line-14" stroke="#62259D" stroke-width="2" fill="none">
     <path d="M 200 1500 L 400 1500 L 600 1500 L 800 1500 L 1000 1500 L 1200 1500 L 1400 1500"/>
   </g>
   
@@ -144,6 +144,7 @@
   
   <!-- Note: Cette carte est simplifiée. Pour une vraie carte, il faudrait positionner toutes les stations précisément -->
 </svg>
+
 
 
 
