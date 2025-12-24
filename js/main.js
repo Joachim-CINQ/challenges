@@ -54,6 +54,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Exposer pokemonGame globalement pour les callbacks onclick
     window.pokemonGame = pokemonGame;
 
+    // Créer et enregistrer le jeu LogoGame
+    const logoGame = new LogoGame();
+    logoGame.init();
+    gameManager.registerGame('logos', logoGame);
+
+    // Exposer logoGame globalement pour les callbacks onclick
+    window.logoGame = logoGame;
+
     // Mettre à jour le menu pour afficher les jeux enregistrés
     gameManager.showMenu();
 
