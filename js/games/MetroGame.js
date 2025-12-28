@@ -509,10 +509,11 @@ class MetroGame extends GameBase {
             }
             
             // Aucune correspondance trouvée, pénalité
-            if (!gameManager.spendPoints(5)) {
+            const errorCost = gameManager.getErrorCost();
+            if (!gameManager.deductErrorPoints()) {
                 this.showFeedback('❌ Station non trouvée. Essayez encore !', 'error', 2000);
             } else {
-                this.showFeedback('❌ Station non trouvée (-5 pts). Essayez encore !', 'error', 2000);
+                this.showFeedback(`❌ Station non trouvée (-${errorCost} pts). Essayez encore !`, 'error', 2000);
             }
             return;
         }
@@ -619,10 +620,11 @@ class MetroGame extends GameBase {
             }
             
             // Aucune correspondance trouvée, pénalité
-            if (!gameManager.spendPoints(5)) {
+            const errorCost = gameManager.getErrorCost();
+            if (!gameManager.deductErrorPoints()) {
                 this.showFeedback('❌ Station non trouvée. Essayez encore !', 'error', 2000);
             } else {
-                this.showFeedback('❌ Station non trouvée (-5 pts). Essayez encore !', 'error', 2000);
+                this.showFeedback(`❌ Station non trouvée (-${errorCost} pts). Essayez encore !`, 'error', 2000);
             }
             return;
         }
@@ -667,22 +669,22 @@ class MetroGame extends GameBase {
         this.userAnswers[stationId] = userInput;
         this.foundStationIds.add(stationId);
         
-            gameManager.addPoints(10);
-            this.saveState();
-            
-            // Mettre à jour visuellement la carte
+        gameManager.addPoints(GameManager.CORRECT_ANSWER_POINTS);
+        this.saveState();
+        
+        // Mettre à jour visuellement la carte
         this.revealStation(stationId);
-            
+        
         // Mettre à jour la progression
-            this.updateProgress();
-            
+        this.updateProgress();
+        
         const totalFound = this.foundStationIds.size;
         const totalStations = this.getUniqueStationCount();
         
         if (totalFound === totalStations) {
-                this.showFeedback('🎉 Félicitations ! Vous avez trouvé toutes les stations !', 'success', 5000);
-            } else {
-            this.showFeedback(`✅ ${feature.properties.name} trouvée ! +10 points`, 'success', 2000);
+            this.showFeedback('🎉 Félicitations ! Vous avez trouvé toutes les stations !', 'success', 5000);
+        } else {
+            this.showFeedback(`✅ ${feature.properties.name} trouvée ! +${GameManager.CORRECT_ANSWER_POINTS} points`, 'success', 2000);
         }
     }
 
@@ -976,8 +978,9 @@ class MetroGame extends GameBase {
             return;
         }
 
-        if (!gameManager.spendPoints(25)) {
-            this.showFeedback('❌ Pas assez de points pour utiliser un indice !', 'error', 2000);
+        const hintCost = gameManager.getHintCost();
+        if (!gameManager.spendPoints(hintCost)) {
+            this.showFeedback(`❌ Pas assez de points pour utiliser un indice ! (Coût: ${hintCost} pts)`, 'error', 2000);
             return;
         }
 
@@ -1026,7 +1029,7 @@ class MetroGame extends GameBase {
         // Afficher l'indice
         const firstLetter = name.trim()[0].toUpperCase();
         const lastLetter = name.trim()[name.trim().length - 1].toUpperCase();
-        this.showFeedback(`💡 Indice: ${firstLetter}...${lastLetter} (-25 pts)`, 'success', 3000);
+        this.showFeedback(`💡 Indice: ${firstLetter}...${lastLetter} (-${hintCost} pts)`, 'success', 3000);
         
         // Mettre à jour le placeholder dans le champ de recherche
         const searchInput = document.getElementById('metro-search-input');

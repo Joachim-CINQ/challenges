@@ -18,6 +18,10 @@
                 <span class="score-label">Score Global:</span>
                 <span id="global-score" class="score-value">50</span>
             </div>
+            <div class="costs-info">
+                <span class="cost-item">💡 Indice: -<span id="hint-cost">25</span> pts</span>
+                <span class="cost-item">❌ Erreur: -<span id="error-cost">5</span> pts</span>
+            </div>
             <div style="display: flex; gap: 1rem; align-items: center;">
                 <button id="restart-all-btn" class="btn-restart-global" title="Réinitialiser tous les jeux et le score">🔄 Restart</button>
                 <button id="menu-btn" class="btn-menu" style="display: none;">Menu Principal</button>
@@ -63,12 +67,14 @@
     <script src="js/games/GameBase.js"></script>
     <script src="js/data/peopleData.js"></script>
     <script src="js/data/logoData.js"></script>
+    <script src="js/data/languageData.js"></script>
     <script src="js/games/FlagGame.js"></script>
     <script src="js/games/MapGame.js"></script>
     <script src="js/games/MetroGame.js"></script>
     <script src="js/games/PeopleGame.js"></script>
     <script src="js/games/PokemonGame.js"></script>
     <script src="js/games/LogoGame.js"></script>
+    <script src="js/games/LanguageGame.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>

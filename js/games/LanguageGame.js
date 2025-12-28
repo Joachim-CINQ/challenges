@@ -1,25 +1,24 @@
 /**
- * LogoGame - Jeu de quiz sur les logos
- * Tous les logos sont affichés, le joueur doit deviner le nom de chaque marque/entreprise
+ * LanguageGame - Jeu de quiz sur les langues
+ * Des phrases "Bonne année à tous" dans différentes langues sont affichées, le joueur doit deviner la langue
  */
-class LogoGame extends GameBase {
+class LanguageGame extends GameBase {
     constructor() {
-        super('logos', 'Challenge Logos', 'Devinez tous les logos de marques et entreprises !');
+        super('languages', 'Challenge Langues', 'Devinez toutes les langues à partir de "Bonne année à tous" !');
         
-        // Liste complète des logos
-        this.logos = LOGO_DATA.map(logo => ({
-            id: logo.id,
-            name: logo.name,
-            category: logo.category,
-            logoUrl: logo.logoUrl,
-            altNames: logo.altNames || []
+        // Liste complète des langues
+        this.languages = LANGUAGE_DATA.map(lang => ({
+            id: lang.id,
+            name: lang.name,
+            text: lang.text,
+            altNames: lang.altNames || []
         }));
 
         // État du jeu
-        this.foundLogos = []; // IDs des logos déjà trouvés
-        this.userAnswers = {}; // { logoId: userInput }
-        this.hintsRevealed = {}; // { logoId: [indices de lettres révélées] }
-        this.logosOrder = []; // Ordre aléatoire des logos
+        this.foundLanguages = []; // IDs des langues déjà trouvées
+        this.userAnswers = {}; // { languageId: userInput }
+        this.hintsRevealed = {}; // { languageId: [indices de lettres révélées] }
+        this.languagesOrder = []; // Ordre aléatoire des langues
     }
 
     /**
@@ -42,9 +41,9 @@ class LogoGame extends GameBase {
     init() {
         this.loadState();
         
-        // Mélanger l'ordre des logos si ce n'est pas déjà fait
-        if (this.logosOrder.length === 0) {
-            this.logosOrder = this.shuffleArray(this.logos.map(l => l.id));
+        // Mélanger l'ordre des langues si ce n'est pas déjà fait
+        if (this.languagesOrder.length === 0) {
+            this.languagesOrder = this.shuffleArray(this.languages.map(l => l.id));
         }
     }
 
@@ -58,22 +57,22 @@ class LogoGame extends GameBase {
     }
 
     /**
-     * Récupère les logos dans l'ordre mélangé
-     * @returns {Array} Liste des logos dans l'ordre aléatoire
+     * Récupère les langues dans l'ordre mélangé
+     * @returns {Array} Liste des langues dans l'ordre aléatoire
      */
-    getLogosInOrder() {
-        return this.logosOrder.map(id => 
-            this.logos.find(l => l.id === id)
+    getLanguagesInOrder() {
+        return this.languagesOrder.map(id => 
+            this.languages.find(l => l.id === id)
         ).filter(l => l !== undefined);
     }
 
     /**
-     * Utilise un indice pour révéler une lettre d'un logo
-     * @param {number} logoId - ID du logo
+     * Utilise un indice pour révéler une lettre d'une langue
+     * @param {number} languageId - ID de la langue
      */
-    useHint(logoId) {
-        const logo = this.logos.find(l => l.id === logoId);
-        if (!logo || this.foundLogos.includes(logoId)) {
+    useHint(languageId) {
+        const language = this.languages.find(l => l.id === languageId);
+        if (!language || this.foundLanguages.includes(languageId)) {
             return;
         }
 
@@ -85,21 +84,21 @@ class LogoGame extends GameBase {
         }
 
         // Initialiser la liste des indices si nécessaire
-        if (!this.hintsRevealed[logoId]) {
-            this.hintsRevealed[logoId] = [];
+        if (!this.hintsRevealed[languageId]) {
+            this.hintsRevealed[languageId] = [];
         }
 
         // Trouver une lettre non encore révélée
-        const name = logo.name;
+        const name = language.name;
         const allIndices = Array.from({ length: name.length }, (_, i) => i);
         const availableIndices = allIndices.filter(i => 
-            !this.hintsRevealed[logoId].includes(i) && name[i] !== ' '
+            !this.hintsRevealed[languageId].includes(i) && name[i] !== ' '
         );
 
         if (availableIndices.length > 0) {
             // Révéler une lettre aléatoire parmi celles disponibles
             const randomIndex = availableIndices[Math.floor(Math.random() * availableIndices.length)];
-            this.hintsRevealed[logoId].push(randomIndex);
+            this.hintsRevealed[languageId].push(randomIndex);
             this.saveState();
             this.render();
             this.showFeedback(`💡 Lettre révélée : "${name[randomIndex]}" (-${hintCost} pts)`, 'success', 2000);
@@ -110,12 +109,12 @@ class LogoGame extends GameBase {
 
     /**
      * Génère le placeholder avec les lettres révélées
-     * @param {Object} logo - Objet logo
+     * @param {Object} language - Objet langue
      * @returns {string} Placeholder avec lettres révélées
      */
-    getHintPlaceholder(logo) {
-        const name = logo.name;
-        const revealedIndices = this.hintsRevealed[logo.id] || [];
+    getHintPlaceholder(language) {
+        const name = language.name;
+        const revealedIndices = this.hintsRevealed[language.id] || [];
         const revealedSet = new Set(revealedIndices);
         
         return name.split('').map((char, index) => {
@@ -174,22 +173,22 @@ class LogoGame extends GameBase {
     }
 
     /**
-     * Vérifie si une réponse correspond à un logo avec tolérance orthographique
+     * Vérifie si une réponse correspond à une langue avec tolérance orthographique
      * @param {string} userInput - Réponse de l'utilisateur
-     * @param {Object} logo - Objet logo
+     * @param {Object} language - Objet langue
      * @returns {boolean} true si la réponse est correcte
      */
-    checkAnswer(userInput, logo) {
+    checkAnswer(userInput, language) {
         if (!userInput || !userInput.trim()) return false;
 
         const normalizedInput = this.normalizeString(userInput);
-        const normalizedName = this.normalizeString(logo.name);
+        const normalizedName = this.normalizeString(language.name);
 
         // Vérification exacte (après normalisation)
         if (normalizedInput === normalizedName) return true;
 
         // Vérification des noms alternatifs
-        for (const altName of logo.altNames || []) {
+        for (const altName of language.altNames || []) {
             if (this.normalizeString(altName) === normalizedInput) return true;
         }
 
@@ -200,7 +199,7 @@ class LogoGame extends GameBase {
         if (distance <= maxDistance) return true;
 
         // Vérifier aussi avec les noms alternatifs
-        for (const altName of logo.altNames || []) {
+        for (const altName of language.altNames || []) {
             const normalizedAlt = this.normalizeString(altName);
             const altDistance = this.levenshteinDistance(normalizedInput, normalizedAlt);
             if (altDistance <= maxDistance) return true;
@@ -210,30 +209,30 @@ class LogoGame extends GameBase {
     }
 
     /**
-     * Gère la soumission d'une réponse pour un logo
-     * @param {number} logoId - ID du logo
+     * Gère la soumission d'une réponse pour une langue
+     * @param {number} languageId - ID de la langue
      * @param {string} userInput - Réponse de l'utilisateur
      */
-    handleAnswer(logoId, userInput) {
-        const logo = this.logos.find(l => l.id === logoId);
-        if (!logo) return;
+    handleAnswer(languageId, userInput) {
+        const language = this.languages.find(l => l.id === languageId);
+        if (!language) return;
 
         // Si déjà trouvé, ne rien faire
-        if (this.foundLogos.includes(logoId)) return;
+        if (this.foundLanguages.includes(languageId)) return;
 
         // Sauvegarder la réponse de l'utilisateur
-        this.userAnswers[logoId] = userInput;
+        this.userAnswers[languageId] = userInput;
 
         // Vérifier si la réponse est correcte
-        if (this.checkAnswer(userInput, logo)) {
-            this.foundLogos.push(logoId);
+        if (this.checkAnswer(userInput, language)) {
+            this.foundLanguages.push(languageId);
             gameManager.addPoints(GameManager.CORRECT_ANSWER_POINTS);
             this.saveState();
             this.render();
             
-            // Vérifier si tous les logos sont trouvés
-            if (this.foundLogos.length === this.logos.length) {
-                this.showFeedback('🎉 Félicitations ! Vous avez trouvé tous les logos !', 'success', 5000);
+            // Vérifier si toutes les langues sont trouvées
+            if (this.foundLanguages.length === this.languages.length) {
+                this.showFeedback('🎉 Félicitations ! Vous avez trouvé toutes les langues !', 'success', 5000);
             }
         } else {
             // Réponse incorrecte - déduire des points
@@ -251,8 +250,8 @@ class LogoGame extends GameBase {
      * @returns {Object} { found: number, total: number, percentage: number }
      */
     getProgress() {
-        const found = this.foundLogos.length;
-        const total = this.logos.length;
+        const found = this.foundLanguages.length;
+        const total = this.languages.length;
         const percentage = total > 0 ? Math.round((found / total) * 100) : 0;
         return { found, total, percentage };
     }
@@ -262,21 +261,21 @@ class LogoGame extends GameBase {
      */
     render() {
         const container = this.getGameContainer();
-        const stats = this.foundLogos.length;
-        const total = this.logos.length;
+        const stats = this.foundLanguages.length;
+        const total = this.languages.length;
         const percentage = Math.round((stats / total) * 100);
-        const logosInOrder = this.getLogosInOrder();
+        const languagesInOrder = this.getLanguagesInOrder();
 
         // Sauvegarder la position de scroll avant de réinitialiser le DOM
-        const logosContainer = container.querySelector('.logos-grid-container');
+        const languagesContainer = container.querySelector('.languages-grid-container');
         let savedScrollTop = 0;
         let savedVisibleElement = null;
         
-        if (logosContainer) {
-            savedScrollTop = logosContainer.scrollTop;
-            const logoItems = logosContainer.querySelectorAll('.logo-item');
-            const containerRect = logosContainer.getBoundingClientRect();
-            for (const item of logoItems) {
+        if (languagesContainer) {
+            savedScrollTop = languagesContainer.scrollTop;
+            const languageItems = languagesContainer.querySelectorAll('.language-item');
+            const containerRect = languagesContainer.getBoundingClientRect();
+            for (const item of languageItems) {
                 const itemRect = item.getBoundingClientRect();
                 if (itemRect.top >= containerRect.top && itemRect.top <= containerRect.bottom) {
                     savedVisibleElement = item.getAttribute('data-id');
@@ -291,39 +290,33 @@ class LogoGame extends GameBase {
                 <p>Progression: ${stats}/${total} (${percentage}%)</p>
             </div>
 
-            <div class="logos-grid-container">
-                <div class="logos-grid" id="logos-grid">
-                    ${logosInOrder.map(logo => {
-                        const isFound = this.foundLogos.includes(logo.id);
-                        const userAnswer = this.userAnswers[logo.id] || '';
-                        const hasHint = this.hintsRevealed[logo.id] && this.hintsRevealed[logo.id].length > 0;
-                        const placeholder = isFound ? logo.name : (hasHint ? this.getHintPlaceholder(logo) : 'Nom de la marque...');
+            <div class="languages-grid-container">
+                <div class="languages-grid" id="languages-grid">
+                    ${languagesInOrder.map(language => {
+                        const isFound = this.foundLanguages.includes(language.id);
+                        const userAnswer = this.userAnswers[language.id] || '';
+                        const hasHint = this.hintsRevealed[language.id] && this.hintsRevealed[language.id].length > 0;
+                        const placeholder = isFound ? language.name : (hasHint ? this.getHintPlaceholder(language) : 'Nom de la langue...');
                         
                         return `
-                            <div class="logo-item ${isFound ? 'found' : ''}" data-id="${logo.id}">
-                                <div class="logo-image-small">
-                                    <img 
-                                        src="${logo.logoUrl}" 
-                                        alt="${logo.name}" 
-                                        data-logo-id="${logo.id}"
-                                        data-logo-name="${logo.name}"
-                                        onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'160\\' height=\\'160\\'%3E%3Crect fill=\\'%23ddd\\' width=\\'160\\' height=\\'160\\'/%3E%3Ctext x=\\'50%25\\' y=\\'50%25\\' text-anchor=\\'middle\\' dy=\\'.3em\\' fill=\\'%23999\\' font-size=\\'14\\'%3E${logo.name}%3C/text%3E%3C/svg%3E'"
-                                    >
+                            <div class="language-item ${isFound ? 'found' : ''}" data-id="${language.id}">
+                                <div class="language-text-display">
+                                    <p class="language-phrase">"${language.text}"</p>
                                     ${isFound ? '<div class="checkmark">✓</div>' : ''}
                                 </div>
                                 <input 
                                     type="text" 
-                                    class="logo-input ${isFound ? 'correct' : ''}"
+                                    class="language-input ${isFound ? 'correct' : ''}"
                                     placeholder="${placeholder}"
-                                    value="${isFound ? logo.name : userAnswer}"
-                                    data-id="${logo.id}"
+                                    value="${isFound ? language.name : userAnswer}"
+                                    data-id="${language.id}"
                                     ${isFound ? 'disabled' : ''}
                                     autocomplete="off"
                                 />
                                 ${!isFound ? `
                                     <button 
                                         class="btn-hint" 
-                                        data-id="${logo.id}"
+                                        data-id="${language.id}"
                                         title="Révéler une lettre (-25 pts)"
                                     >
                                         💡
@@ -346,19 +339,19 @@ class LogoGame extends GameBase {
         // Restaurer la position de scroll après le rendu
         if (savedScrollTop > 0 || savedVisibleElement) {
             const restoreScroll = () => {
-                const newLogosContainer = container.querySelector('.logos-grid-container');
-                if (!newLogosContainer) return;
+                const newLanguagesContainer = container.querySelector('.languages-grid-container');
+                if (!newLanguagesContainer) return;
                 
                 if (savedVisibleElement) {
-                    const targetElement = newLogosContainer.querySelector(`[data-id="${savedVisibleElement}"]`);
+                    const targetElement = newLanguagesContainer.querySelector(`[data-id="${savedVisibleElement}"]`);
                     if (targetElement) {
                         targetElement.scrollIntoView({ behavior: 'instant', block: 'start' });
-                        newLogosContainer.scrollTop = Math.max(0, newLogosContainer.scrollTop - 10);
+                        newLanguagesContainer.scrollTop = Math.max(0, newLanguagesContainer.scrollTop - 10);
                         return;
                     }
                 }
                 
-                newLogosContainer.scrollTop = savedScrollTop;
+                newLanguagesContainer.scrollTop = savedScrollTop;
             };
             
             requestAnimationFrame(() => {
@@ -375,14 +368,14 @@ class LogoGame extends GameBase {
      * Attache les event listeners
      */
     attachEventListeners() {
-        const inputs = document.querySelectorAll('.logo-input:not(:disabled)');
+        const inputs = document.querySelectorAll('.language-input:not(:disabled)');
         
         inputs.forEach(input => {
-            const logoId = parseInt(input.getAttribute('data-id'));
+            const languageId = parseInt(input.getAttribute('data-id'));
             
             // Validation à la perte de focus ou Enter
             input.addEventListener('blur', () => {
-                this.handleAnswer(logoId, input.value);
+                this.handleAnswer(languageId, input.value);
             });
 
             input.addEventListener('keypress', (e) => {
@@ -397,8 +390,8 @@ class LogoGame extends GameBase {
         const hintButtons = document.querySelectorAll('.btn-hint');
         hintButtons.forEach(button => {
             button.addEventListener('click', () => {
-                const logoId = parseInt(button.getAttribute('data-id'));
-                this.useHint(logoId);
+                const languageId = parseInt(button.getAttribute('data-id'));
+                this.useHint(languageId);
             });
         });
     }
@@ -408,10 +401,10 @@ class LogoGame extends GameBase {
      */
     saveState() {
         const state = {
-            foundLogos: this.foundLogos,
+            foundLanguages: this.foundLanguages,
             userAnswers: this.userAnswers,
             hintsRevealed: this.hintsRevealed,
-            logosOrder: this.logosOrder
+            languagesOrder: this.languagesOrder
         };
         StorageManager.saveGameState(this.gameId, state);
     }
@@ -422,15 +415,15 @@ class LogoGame extends GameBase {
     loadState() {
         const state = StorageManager.loadGameState(this.gameId);
         if (state) {
-            this.foundLogos = state.foundLogos || [];
+            this.foundLanguages = state.foundLanguages || [];
             this.userAnswers = state.userAnswers || {};
             this.hintsRevealed = state.hintsRevealed || {};
-            this.logosOrder = state.logosOrder || [];
+            this.languagesOrder = state.languagesOrder || [];
         }
         
         // Si pas d'ordre sauvegardé, créer un ordre aléatoire
-        if (this.logosOrder.length === 0) {
-            this.logosOrder = this.shuffleArray(this.logos.map(l => l.id));
+        if (this.languagesOrder.length === 0) {
+            this.languagesOrder = this.shuffleArray(this.languages.map(l => l.id));
             this.saveState();
         }
     }
@@ -440,9 +433,9 @@ class LogoGame extends GameBase {
      */
     reset() {
         super.reset();
-        this.foundLogos = [];
+        this.foundLanguages = [];
         this.userAnswers = {};
         this.hintsRevealed = {};
-        this.logosOrder = this.shuffleArray(this.logos.map(l => l.id));
+        this.languagesOrder = this.shuffleArray(this.languages.map(l => l.id));
     }
 }

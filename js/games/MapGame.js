@@ -491,7 +491,7 @@ class MapGame extends GameBase {
         if (selectedCode === mapCode) {
             // Placement correct !
             this.placedCountries.push(selectedCode);
-            gameManager.addPoints(10);
+            gameManager.addPoints(GameManager.CORRECT_ANSWER_POINTS);
             this.selectedCountry = null;
             this.saveState();
             this.render();
@@ -501,7 +501,7 @@ class MapGame extends GameBase {
             if (this.placedCountries.length === this.countries.length) {
                 this.showFeedback('🎉 Félicitations ! Vous avez placé tous les pays !', 'success', 5000);
             } else {
-                this.showFeedback('✅ Correct ! +10 points', 'success', 2000);
+                this.showFeedback(`✅ Correct ! +${GameManager.CORRECT_ANSWER_POINTS} points`, 'success', 2000);
             }
         } else {
             // Placement incorrect - pénalité de points

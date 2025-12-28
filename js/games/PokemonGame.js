@@ -436,8 +436,9 @@ class PokemonGame extends GameBase {
         }
 
         // Vérifier si on a assez de points
-        if (!gameManager.spendPoints(25)) {
-            this.showFeedback('❌ Pas assez de points pour utiliser un indice !', 'error', 2000);
+        const hintCost = gameManager.getHintCost();
+        if (!gameManager.spendPoints(hintCost)) {
+            this.showFeedback(`❌ Pas assez de points pour utiliser un indice ! (Coût: ${hintCost} pts)`, 'error', 2000);
             return;
         }
 
@@ -459,7 +460,7 @@ class PokemonGame extends GameBase {
             this.hintsRevealed[pokemonId].push(randomIndex);
             this.saveState();
             this.render();
-            this.showFeedback(`💡 Lettre révélée : "${name[randomIndex]}" (-25 pts)`, 'success', 2000);
+            this.showFeedback(`💡 Lettre révélée : "${name[randomIndex]}" (-${hintCost} pts)`, 'success', 2000);
         } else {
             this.showFeedback('✅ Toutes les lettres sont déjà révélées !', 'success', 2000);
         }
@@ -584,13 +585,21 @@ class PokemonGame extends GameBase {
         // Vérifier si la réponse est correcte
         if (this.checkAnswer(userInput, pokemon)) {
             this.foundPokemon.push(pokemonId);
-            gameManager.addPoints(10);
+            gameManager.addPoints(GameManager.CORRECT_ANSWER_POINTS);
             this.saveState();
             this.render();
             
             // Vérifier si tous les Pokémon sont trouvés
             if (this.foundPokemon.length === this.pokemon.length) {
                 this.showFeedback('🎉 Félicitations ! Vous avez trouvé tous les Pokémon !', 'success', 5000);
+            }
+        } else {
+            // Réponse incorrecte - déduire des points
+            const errorCost = gameManager.getErrorCost();
+            if (gameManager.deductErrorPoints()) {
+                this.showFeedback(`❌ Incorrect ! -${errorCost} pts`, 'error', 2000);
+            } else {
+                this.showFeedback('❌ Incorrect ! (Pas assez de points pour pénalité)', 'error', 2000);
             }
         }
     }

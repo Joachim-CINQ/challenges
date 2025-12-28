@@ -65,6 +65,14 @@ document.addEventListener('DOMContentLoaded', () => {
     window.logoGame = logoGame;
     */
 
+    // Créer et enregistrer le jeu LanguageGame
+    const languageGame = new LanguageGame();
+    languageGame.init();
+    gameManager.registerGame('languages', languageGame);
+
+    // Exposer languageGame globalement pour les callbacks onclick
+    window.languageGame = languageGame;
+
     // Mettre à jour le menu pour afficher les jeux enregistrés
     gameManager.showMenu();
 

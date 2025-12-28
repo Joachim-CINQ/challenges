@@ -86,6 +86,26 @@ body {
     text-shadow: 2px 2px 0px var(--accent-yellow);
 }
 
+.costs-info {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    font-size: 1.1rem;
+    font-weight: 700;
+    font-family: 'Comic Sans MS', 'Chalkboard SE', 'Marker Felt', 'Trebuchet MS', sans-serif;
+}
+
+.cost-item {
+    color: var(--text-primary);
+    text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.8);
+    white-space: nowrap;
+}
+
+.cost-item span {
+    font-weight: 900;
+    color: var(--accent-primary);
+}
+
 .btn-menu {
     padding: 1rem 2.5rem;
     background: var(--accent-yellow);
@@ -989,6 +1009,148 @@ body {
     opacity: 0.8;
 }
 
+/* Styles pour LanguageGame */
+.languages-grid-container {
+    background: var(--bg-secondary);
+    border: 4px solid var(--accent-yellow);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-top: 1rem;
+    max-height: calc(100vh - 250px);
+    overflow-y: auto;
+    box-shadow: 0 4px 12px var(--shadow), 0 0 0 2px var(--accent-blue);
+}
+
+.languages-grid-container::-webkit-scrollbar {
+    width: 10px;
+}
+
+.languages-grid-container::-webkit-scrollbar-track {
+    background: var(--bg-tertiary);
+    border-radius: 5px;
+}
+
+.languages-grid-container::-webkit-scrollbar-thumb {
+    background: var(--accent-primary);
+    border-radius: 5px;
+}
+
+.languages-grid-container::-webkit-scrollbar-thumb:hover {
+    background: #357abd;
+}
+
+.languages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2.5rem;
+}
+
+.language-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 2rem;
+    background: var(--bg-secondary);
+    border: 4px solid var(--accent-yellow);
+    border-radius: 16px;
+    transition: all 0.3s ease;
+    position: relative;
+    box-shadow: 0 4px 12px var(--shadow), 0 0 0 2px var(--accent-blue);
+}
+
+.language-item:hover {
+    border-color: var(--accent-primary);
+    transform: translateY(-3px) rotate(1deg);
+    box-shadow: 0 6px 16px var(--card-shadow), 0 0 0 3px var(--accent-pink);
+    background: var(--bg-tertiary);
+}
+
+.language-item.found {
+    background: linear-gradient(135deg, rgba(6, 167, 125, 0.2), rgba(58, 134, 255, 0.2));
+    border-color: var(--accent-secondary);
+    box-shadow: 0 4px 12px var(--shadow), 0 0 0 3px var(--accent-secondary);
+}
+
+.language-text-display {
+    width: 100%;
+    min-height: 120px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-tertiary);
+    border: 3px solid var(--accent-yellow);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px var(--shadow);
+}
+
+.language-phrase {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-align: center;
+    margin: 0;
+    line-height: 1.6;
+    font-family: 'Comic Sans MS', 'Chalkboard SE', 'Marker Felt', 'Trebuchet MS', sans-serif;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.language-text-display .checkmark {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: var(--accent-secondary);
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 900;
+    box-shadow: 0 2px 8px var(--shadow);
+    z-index: 10;
+}
+
+.language-input {
+    width: 100%;
+    padding: 1rem;
+    background: var(--bg-secondary);
+    border: 4px solid var(--accent-yellow);
+    border-radius: 12px;
+    font-size: 1.4rem;
+    font-family: 'Comic Sans MS', 'Chalkboard SE', 'Marker Felt', 'Trebuchet MS', sans-serif;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px var(--shadow);
+}
+
+.language-input:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 4px rgba(230, 57, 70, 0.2), 0 4px 12px var(--shadow);
+    background: var(--bg-tertiary);
+}
+
+.language-input.correct {
+    background: linear-gradient(135deg, rgba(6, 167, 125, 0.3), rgba(58, 134, 255, 0.2));
+    border-color: var(--accent-secondary);
+    color: var(--accent-secondary);
+    font-weight: 900;
+    box-shadow: 0 4px 12px var(--shadow), 0 0 0 3px var(--accent-secondary);
+}
+
+.language-input:disabled {
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
 .btn-hint:active {
     transform: translateY(0);
 }
@@ -1487,6 +1649,11 @@ body {
         min-width: 80px;
     }
 
+    .costs-info {
+        gap: 1.5rem;
+        font-size: 1rem;
+    }
+
     .btn-menu {
         padding: 0.8rem 2rem;
         font-size: 1.1rem;
@@ -1573,6 +1740,16 @@ body {
     .score-value {
         font-size: 1.5rem;
         min-width: 60px;
+    }
+
+    .costs-info {
+        gap: 1rem;
+        font-size: 0.9rem;
+        flex-wrap: wrap;
+    }
+
+    .cost-item {
+        font-size: 0.85rem;
     }
 
     .btn-menu {

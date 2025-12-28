@@ -272,8 +272,9 @@ class FlagGame extends GameBase {
         }
 
         // Vérifier si on a assez de points
-        if (!gameManager.spendPoints(25)) {
-            this.showFeedback('❌ Pas assez de points pour utiliser un indice !', 'error', 2000);
+        const hintCost = gameManager.getHintCost();
+        if (!gameManager.spendPoints(hintCost)) {
+            this.showFeedback(`❌ Pas assez de points pour utiliser un indice ! (Coût: ${hintCost} pts)`, 'error', 2000);
             return;
         }
 
@@ -295,7 +296,7 @@ class FlagGame extends GameBase {
             this.hintsRevealed[countryCode].push(randomIndex);
             this.saveState();
             this.render();
-            this.showFeedback(`💡 Lettre révélée : "${name[randomIndex]}" (-25 pts)`, 'success', 2000);
+            this.showFeedback(`💡 Lettre révélée : "${name[randomIndex]}" (-${hintCost} pts)`, 'success', 2000);
         } else {
             // Toutes les lettres sont déjà révélées
             this.showFeedback('💡 Toutes les lettres sont déjà révélées !', 'error', 2000);
@@ -436,13 +437,21 @@ class FlagGame extends GameBase {
         // Vérifier si la réponse est correcte
         if (this.checkAnswer(userInput, country)) {
             this.foundCountries.push(countryCode);
-            gameManager.addPoints(10);
+            gameManager.addPoints(GameManager.CORRECT_ANSWER_POINTS);
             this.saveState();
             this.render();
             
             // Vérifier si tous les pays sont trouvés
             if (this.foundCountries.length === this.countries.length) {
                 this.showFeedback('🎉 Félicitations ! Vous avez trouvé tous les drapeaux !', 'success', 5000);
+            }
+        } else {
+            // Réponse incorrecte - déduire des points
+            const errorCost = gameManager.getErrorCost();
+            if (gameManager.deductErrorPoints()) {
+                this.showFeedback(`❌ Incorrect ! -${errorCost} pts`, 'error', 2000);
+            } else {
+                this.showFeedback('❌ Incorrect ! (Pas assez de points pour pénalité)', 'error', 2000);
             }
         }
     }

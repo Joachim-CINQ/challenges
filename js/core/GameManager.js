@@ -3,6 +3,11 @@
  * Gère le score global, la navigation et les conditions de défaite
  */
 class GameManager {
+    // Constantes pour les coûts
+    static HINT_COST = 25; // Coût d'un indice
+    static ERROR_COST = 5; // Coût d'une erreur
+    static CORRECT_ANSWER_POINTS = 10; // Points gagnés pour une bonne réponse
+
     constructor() {
         // Si pas de score sauvegardé, initialiser à 50 au lieu de 100
         const savedScore = StorageManager.loadGlobalScore();
@@ -18,6 +23,7 @@ class GameManager {
      */
     init() {
         this.updateScoreDisplay();
+        this.updateCostsDisplay();
         this.setupEventListeners();
         this.showMenu();
     }
@@ -260,6 +266,30 @@ class GameManager {
     }
 
     /**
+     * Déduit des points pour une erreur
+     * @returns {boolean} - true si succès, false si game over
+     */
+    deductErrorPoints() {
+        return this.spendPoints(GameManager.ERROR_COST);
+    }
+
+    /**
+     * Retourne le coût d'un indice
+     * @returns {number}
+     */
+    getHintCost() {
+        return GameManager.HINT_COST;
+    }
+
+    /**
+     * Retourne le coût d'une erreur
+     * @returns {number}
+     */
+    getErrorCost() {
+        return GameManager.ERROR_COST;
+    }
+
+    /**
      * Met à jour l'affichage du score dans le HUD
      */
     updateScoreDisplay() {
@@ -272,6 +302,22 @@ class GameManager {
             setTimeout(() => {
                 scoreElement.style.transform = 'scale(1)';
             }, 200);
+        }
+    }
+
+    /**
+     * Met à jour l'affichage des coûts dans le HUD
+     */
+    updateCostsDisplay() {
+        const hintCostElement = document.getElementById('hint-cost');
+        const errorCostElement = document.getElementById('error-cost');
+        
+        if (hintCostElement) {
+            hintCostElement.textContent = GameManager.HINT_COST;
+        }
+        
+        if (errorCostElement) {
+            errorCostElement.textContent = GameManager.ERROR_COST;
         }
     }
 
