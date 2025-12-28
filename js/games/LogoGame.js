@@ -297,7 +297,8 @@ class LogoGame extends GameBase {
                                         src="${logo.logoUrl}" 
                                         alt="${logo.name}" 
                                         data-logo-id="${logo.id}"
-                                        onerror="this.parentElement.innerHTML='❓'"
+                                        data-logo-name="${logo.name}"
+                                        onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'160\\' height=\\'160\\'%3E%3Crect fill=\\'%23ddd\\' width=\\'160\\' height=\\'160\\'/%3E%3Ctext x=\\'50%25\\' y=\\'50%25\\' text-anchor=\\'middle\\' dy=\\'.3em\\' fill=\\'%23999\\' font-size=\\'14\\'%3E${logo.name}%3C/text%3E%3C/svg%3E'"
                                     >
                                     ${isFound ? '<div class="checkmark">✓</div>' : ''}
                                 </div>
