@@ -1707,6 +1707,20 @@ body {
         gap: 1.5rem;
     }
 
+    .pokemon-grid,
+    .logos-grid,
+    .languages-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .pokemon-grid-container,
+    .logos-grid-container,
+    .languages-grid-container {
+        padding: 1.5rem;
+        max-height: calc(100vh - 220px);
+    }
+
     .metro-game-layout {
         grid-template-columns: 1fr 450px;
     }
@@ -1858,6 +1872,34 @@ body {
     }
 
     .person-input {
+        font-size: 1rem;
+        padding: 0.8rem;
+    }
+
+    .pokemon-grid,
+    .logos-grid,
+    .languages-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 1rem;
+    }
+
+    .pokemon-grid-container,
+    .logos-grid-container,
+    .languages-grid-container {
+        padding: 1rem;
+        max-height: calc(100vh - 200px);
+    }
+
+    .pokemon-item,
+    .logo-item,
+    .language-item {
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    .pokemon-input,
+    .logo-input,
+    .language-input {
         font-size: 1rem;
         padding: 0.8rem;
     }
@@ -2052,6 +2094,48 @@ body {
         padding: 0.6rem;
     }
 
+    .pokemon-grid,
+    .logos-grid,
+    .languages-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 0.8rem;
+    }
+
+    .pokemon-grid-container,
+    .logos-grid-container,
+    .languages-grid-container {
+        padding: 0.5rem;
+        max-height: calc(100vh - 180px);
+    }
+
+    .pokemon-item,
+    .logo-item,
+    .language-item {
+        padding: 0.8rem;
+        gap: 0.8rem;
+    }
+
+    .pokemon-input,
+    .logo-input,
+    .language-input {
+        font-size: 0.9rem;
+        padding: 0.6rem;
+    }
+
+    .language-phrase {
+        font-size: 1.2rem;
+    }
+
+    .language-text-display {
+        min-height: 80px;
+        padding: 1rem;
+    }
+
+    .btn-hint {
+        font-size: 1.2rem;
+        padding: 0.6rem;
+    }
+
     .map-container {
         height: calc(100vh - 400px);
         min-height: 250px;
@@ -2127,6 +2211,313 @@ body {
     /* Assurer que les inputs sont lisibles sur mobile */
     input[type="text"] {
         font-size: 16px !important; /* Évite le zoom automatique sur iOS */
+    }
+
+    /* Grilles de jeux pour petit mobile */
+    .pokemon-grid,
+    .logos-grid,
+    .languages-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 0.8rem;
+    }
+
+    .pokemon-grid-container,
+    .logos-grid-container,
+    .languages-grid-container {
+        padding: 0.5rem;
+        max-height: calc(100vh - 180px);
+    }
+
+    .pokemon-item,
+    .logo-item,
+    .language-item {
+        padding: 0.8rem;
+        gap: 0.8rem;
+    }
+
+    .pokemon-input,
+    .logo-input,
+    .language-input {
+        font-size: 0.9rem;
+        padding: 0.6rem;
+    }
+
+    .btn-hint {
+        font-size: 1.2rem;
+        padding: 0.6rem;
+    }
+}
+
+/* Responsive - Ordinateur 13 pouces (1366px - 1440px) */
+@media (min-width: 1366px) and (max-width: 1440px) {
+    .hud-content {
+        max-width: 1440px;
+        padding: 0 2.5rem;
+    }
+
+    .game-content {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .flags-grid,
+    .people-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 2rem;
+    }
+
+    .pokemon-grid,
+    .logos-grid,
+    .languages-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 2rem;
+    }
+
+    .metro-game-layout {
+        grid-template-columns: 1fr 550px;
+    }
+
+    .metro-search-section {
+        min-width: 550px;
+    }
+
+    .map-container {
+        height: calc(100vh - 300px);
+    }
+
+    .games-list {
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 2rem;
+    }
+}
+
+/* Responsive - Écran géant (1920px+) */
+@media (min-width: 1920px) {
+    .hud {
+        height: 120px;
+    }
+
+    .hud-content {
+        max-width: 2560px;
+        padding: 0 4rem;
+    }
+
+    .score-label {
+        font-size: 2rem;
+    }
+
+    .score-value {
+        font-size: 3.5rem;
+        min-width: 150px;
+    }
+
+    .costs-info {
+        gap: 3rem;
+        font-size: 1.4rem;
+    }
+
+    .cost-item {
+        font-size: 1.3rem;
+    }
+
+    .btn-menu {
+        padding: 1.5rem 3rem;
+        font-size: 1.6rem;
+        border-width: 5px;
+    }
+
+    .btn-restart-global {
+        padding: 1rem 2rem;
+        font-size: 1.4rem;
+        border-width: 4px;
+    }
+
+    .title {
+        font-size: 6rem;
+    }
+
+    .subtitle {
+        font-size: 2rem;
+    }
+
+    .game-content {
+        max-width: 2400px;
+        margin: 0 auto;
+        padding: 3rem;
+    }
+
+    .game-header {
+        padding: 2rem;
+    }
+
+    .game-header h2 {
+        font-size: 4rem;
+    }
+
+    .game-header p {
+        font-size: 1.8rem;
+    }
+
+    .games-list {
+        grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+        gap: 3rem;
+        margin-top: 3rem;
+    }
+
+    .game-card {
+        padding: 3rem;
+    }
+
+    .game-card h3 {
+        font-size: 2.8rem;
+    }
+
+    .game-card p {
+        font-size: 1.6rem;
+    }
+
+    .flags-grid,
+    .people-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 3rem;
+    }
+
+    .pokemon-grid,
+    .logos-grid,
+    .languages-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 3rem;
+    }
+
+    .pokemon-grid-container,
+    .logos-grid-container,
+    .languages-grid-container,
+    .flags-grid-container,
+    .people-grid-container {
+        padding: 3rem;
+        max-height: calc(100vh - 300px);
+    }
+
+    .pokemon-item,
+    .logo-item,
+    .language-item,
+    .flag-item,
+    .person-item {
+        padding: 2.5rem;
+        gap: 2rem;
+    }
+
+    .pokemon-input,
+    .logo-input,
+    .language-input,
+    .flag-input,
+    .person-input {
+        font-size: 1.8rem;
+        padding: 1.5rem;
+    }
+
+    .btn-hint {
+        font-size: 2.5rem;
+        padding: 1.5rem;
+    }
+
+    .metro-game-layout {
+        grid-template-columns: 1fr 700px;
+        gap: 2rem;
+    }
+
+    .metro-search-section {
+        min-width: 700px;
+        padding: 2rem;
+    }
+
+    .metro-search-input {
+        font-size: 1.6rem;
+        padding: 1.5rem;
+    }
+
+    .btn-search,
+    .btn-hint-metro {
+        padding: 1.5rem 2rem;
+        font-size: 1.6rem;
+    }
+
+    .map-container {
+        height: calc(100vh - 350px);
+    }
+
+    .countries-list-section {
+        padding: 2rem;
+    }
+
+    .countries-list-section h3 {
+        font-size: 2.5rem;
+    }
+
+    .country-item {
+        padding: 1.5rem 2rem;
+        font-size: 1.6rem;
+    }
+
+    .btn-restart {
+        padding: 1.2rem 2.4rem;
+        font-size: 1.6rem;
+        border-width: 5px;
+    }
+
+    .loading-screen h2 {
+        font-size: 4rem;
+    }
+
+    .loading-screen p {
+        font-size: 2rem;
+    }
+
+    .loading-spinner {
+        width: 100px;
+        height: 100px;
+        border-width: 10px;
+    }
+
+    .language-phrase {
+        font-size: 2.2rem;
+    }
+
+    .language-text-display {
+        min-height: 150px;
+        padding: 2rem;
+    }
+
+    .metro-map-container {
+        height: calc(100vh - 400px);
+        min-height: 600px;
+    }
+
+    .map-container {
+        height: calc(100vh - 400px);
+        min-height: 700px;
+    }
+
+    .countries-list-section {
+        padding: 2.5rem;
+        max-height: 500px;
+    }
+
+    .line-summary {
+        padding: 1.5rem;
+    }
+
+    .line-summary h4 {
+        font-size: 1.8rem;
+    }
+
+    .progress-bar {
+        height: 25px;
+    }
+
+    .progress-text {
+        font-size: 1.4rem;
     }
 }
 

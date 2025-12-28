@@ -23,58 +23,100 @@ class PokemonGame extends GameBase {
     }
 
     /**
-     * Récupère les données d'un Pokémon depuis la PokeAPI
+     * Effectue une requête fetch avec timeout
+     * @param {string} url - URL à récupérer
+     * @param {number} timeout - Timeout en millisecondes (défaut: 10000)
+     * @returns {Promise<Response>} Réponse de la requête
+     */
+    async fetchWithTimeout(url, timeout = 10000) {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), timeout);
+        
+        try {
+            const response = await fetch(url, {
+                signal: controller.signal,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+            clearTimeout(timeoutId);
+            return response;
+        } catch (error) {
+            clearTimeout(timeoutId);
+            if (error.name === 'AbortError') {
+                throw new Error('Timeout: la requête a pris trop de temps');
+            }
+            throw error;
+        }
+    }
+
+    /**
+     * Récupère les données d'un Pokémon depuis la PokeAPI avec retry
      * @param {number} id - ID du Pokémon (1-150)
+     * @param {number} maxRetries - Nombre maximum de tentatives (défaut: 3)
      * @returns {Promise<Object|null>} Données du Pokémon ou null
      */
-    async fetchPokemonData(id) {
-        try {
-            // Récupérer les données du Pokémon
-            const pokemonResponse = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}/`);
-            if (!pokemonResponse.ok) {
-                throw new Error(`HTTP error! status: ${pokemonResponse.status}`);
+    async fetchPokemonData(id, maxRetries = 3) {
+        let lastError = null;
+        
+        for (let attempt = 1; attempt <= maxRetries; attempt++) {
+            try {
+                // Récupérer les données du Pokémon avec timeout
+                const pokemonResponse = await this.fetchWithTimeout(`https://pokeapi.co/api/v2/pokemon/${id}/`, 10000);
+                if (!pokemonResponse.ok) {
+                    throw new Error(`HTTP error! status: ${pokemonResponse.status}`);
+                }
+                const pokemonData = await pokemonResponse.json();
+                
+                // Récupérer les données de l'espèce pour obtenir le nom français avec timeout
+                const speciesResponse = await this.fetchWithTimeout(pokemonData.species.url, 10000);
+                if (!speciesResponse.ok) {
+                    throw new Error(`HTTP error! status: ${speciesResponse.status}`);
+                }
+                const speciesData = await speciesResponse.json();
+                
+                // Trouver le nom français
+                const frenchName = speciesData.names.find(name => name.language.name === 'fr');
+                const displayName = frenchName ? frenchName.name : this.capitalizeFirst(pokemonData.name);
+                const englishName = this.capitalizeFirst(pokemonData.name);
+                
+                // Construire la liste des noms alternatifs (anglais + autres variantes)
+                // Utiliser un Set pour éviter les doublons
+                const altNamesSet = new Set([englishName]);
+                
+                // Ajouter le nom français s'il est différent du nom d'affichage
+                if (frenchName && frenchName.name !== displayName) {
+                    altNamesSet.add(frenchName.name);
+                }
+                
+                // Ajouter les noms alternatifs depuis getAltNames (pour les cas où l'API n'a pas le nom français)
+                const additionalAltNames = this.getAltNames(pokemonData.name);
+                additionalAltNames.forEach(name => altNamesSet.add(name));
+                
+                // Convertir en tableau et retirer le nom d'affichage s'il est présent
+                const altNames = Array.from(altNamesSet).filter(name => name !== displayName);
+                
+                return {
+                    id: pokemonData.id,
+                    name: displayName, // Nom français par défaut
+                    englishName: englishName, // Garder le nom anglais pour référence
+                    imageUrl: pokemonData.sprites.front_default || pokemonData.sprites.other?.['official-artwork']?.front_default,
+                    altNames: altNames
+                };
+            } catch (error) {
+                lastError = error;
+                console.warn(`Tentative ${attempt}/${maxRetries} échouée pour le Pokémon ${id}:`, error.message);
+                
+                // Si ce n'est pas la dernière tentative, attendre avant de réessayer (backoff exponentiel)
+                if (attempt < maxRetries) {
+                    const delay = Math.min(1000 * Math.pow(2, attempt - 1), 5000); // Max 5 secondes
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                }
             }
-            const pokemonData = await pokemonResponse.json();
-            
-            // Récupérer les données de l'espèce pour obtenir le nom français
-            const speciesResponse = await fetch(pokemonData.species.url);
-            if (!speciesResponse.ok) {
-                throw new Error(`HTTP error! status: ${speciesResponse.status}`);
-            }
-            const speciesData = await speciesResponse.json();
-            
-            // Trouver le nom français
-            const frenchName = speciesData.names.find(name => name.language.name === 'fr');
-            const displayName = frenchName ? frenchName.name : this.capitalizeFirst(pokemonData.name);
-            const englishName = this.capitalizeFirst(pokemonData.name);
-            
-            // Construire la liste des noms alternatifs (anglais + autres variantes)
-            // Utiliser un Set pour éviter les doublons
-            const altNamesSet = new Set([englishName]);
-            
-            // Ajouter le nom français s'il est différent du nom d'affichage
-            if (frenchName && frenchName.name !== displayName) {
-                altNamesSet.add(frenchName.name);
-            }
-            
-            // Ajouter les noms alternatifs depuis getAltNames (pour les cas où l'API n'a pas le nom français)
-            const additionalAltNames = this.getAltNames(pokemonData.name);
-            additionalAltNames.forEach(name => altNamesSet.add(name));
-            
-            // Convertir en tableau et retirer le nom d'affichage s'il est présent
-            const altNames = Array.from(altNamesSet).filter(name => name !== displayName);
-            
-            return {
-                id: pokemonData.id,
-                name: displayName, // Nom français par défaut
-                englishName: englishName, // Garder le nom anglais pour référence
-                imageUrl: pokemonData.sprites.front_default || pokemonData.sprites.other?.['official-artwork']?.front_default,
-                altNames: altNames
-            };
-        } catch (error) {
-            console.error(`Erreur pour le Pokémon ${id}:`, error);
-            return null;
         }
+        
+        console.error(`Échec après ${maxRetries} tentatives pour le Pokémon ${id}:`, lastError);
+        return null;
     }
 
     /**
@@ -281,26 +323,42 @@ class PokemonGame extends GameBase {
      * Initialise le jeu
      */
     async init() {
+        // Éviter les initialisations multiples simultanées
+        if (this._initializing) {
+            return;
+        }
+        
+        this._initializing = true;
         this.isLoading = true;
         this.loadingProgress = 0;
         this.loadState();
         
-        // Charger les Pokémon depuis l'API si ce n'est pas déjà fait
-        if (!this.pokemonLoaded) {
-            await this.loadPokemon();
-        }
-        
-        // Mélanger l'ordre des Pokémon si ce n'est pas déjà fait
-        if (this.pokemonOrder.length === 0) {
-            this.pokemonOrder = this.shuffleArray(this.pokemon.map(p => p.id));
-        }
-        
-        this.isLoading = false;
-        this.loadingProgress = 100;
-        
-        // Mettre à jour le menu pour enlever l'indicateur de chargement
-        if (gameManager && gameManager.updateGamesList) {
-            gameManager.updateGamesList();
+        try {
+            // Charger les Pokémon depuis l'API si ce n'est pas déjà fait
+            if (!this.pokemonLoaded || this.pokemon.length === 0) {
+                await this.loadPokemon();
+            }
+            
+            // Mélanger l'ordre des Pokémon si ce n'est pas déjà fait
+            if (this.pokemonOrder.length === 0 && this.pokemon.length > 0) {
+                this.pokemonOrder = this.shuffleArray(this.pokemon.map(p => p.id));
+            }
+            
+            this.loadingProgress = 100;
+        } catch (error) {
+            console.error('Erreur lors de l\'initialisation du jeu Pokémon:', error);
+            // Continuer même en cas d'erreur si on a au moins quelques Pokémon
+            if (this.pokemon.length === 0) {
+                this.showFeedback('⚠️ Erreur lors du chargement des Pokémon. Veuillez réessayer.', 'error', 5000);
+            }
+        } finally {
+            this.isLoading = false;
+            this._initializing = false;
+            
+            // Mettre à jour le menu pour enlever l'indicateur de chargement
+            if (gameManager && gameManager.updateGamesList) {
+                gameManager.updateGamesList();
+            }
         }
     }
 
@@ -310,9 +368,19 @@ class PokemonGame extends GameBase {
     async loadPokemon() {
         const pokemonList = [];
         const total = 150;
+        let failedCount = 0;
+        const maxFailures = 20; // Arrêter si trop d'échecs consécutifs
         
-        // Charger les Pokémon un par un
+        // Charger les Pokémon par batch pour éviter de surcharger l'API
+        const batchSize = 5;
+        
         for (let i = 1; i <= total; i++) {
+            // Vérifier si on a trop d'échecs consécutifs
+            if (failedCount >= maxFailures) {
+                console.error(`Trop d'échecs consécutifs (${failedCount}). Arrêt du chargement.`);
+                break;
+            }
+            
             this.loadingProgress = Math.round((i / total) * 90); // 0-90% pour le chargement
             
             // Mettre à jour le menu pendant le chargement
@@ -320,23 +388,64 @@ class PokemonGame extends GameBase {
                 gameManager.updateGamesList();
             }
             
-            const pokemonData = await this.fetchPokemonData(i);
-            if (pokemonData && pokemonData.imageUrl) {
-                // Vérifier que l'image charge vraiment
-                const imageValid = await this.validateImage(pokemonData.imageUrl);
-                if (imageValid) {
-                    pokemonList.push(pokemonData);
+            try {
+                const pokemonData = await this.fetchPokemonData(i);
+                
+                if (pokemonData && pokemonData.imageUrl) {
+                    // Vérifier que l'image charge vraiment (avec timeout plus court)
+                    const imageValid = await this.validateImage(pokemonData.imageUrl);
+                    if (imageValid) {
+                        pokemonList.push(pokemonData);
+                        failedCount = 0; // Réinitialiser le compteur d'échecs
+                    } else {
+                        console.warn(`Image invalide pour le Pokémon ${i}`);
+                        failedCount++;
+                    }
+                } else {
+                    console.warn(`Données invalides pour le Pokémon ${i}`);
+                    failedCount++;
                 }
+            } catch (error) {
+                console.error(`Erreur lors du chargement du Pokémon ${i}:`, error);
+                failedCount++;
             }
             
-            // Petit délai pour éviter de surcharger l'API
+            // Délai entre les requêtes pour éviter de surcharger l'API
+            // Plus de délai tous les 10 Pokémon pour laisser l'API respirer
             if (i % 10 === 0) {
-                await new Promise(resolve => setTimeout(resolve, 100));
+                await new Promise(resolve => setTimeout(resolve, 200));
+            } else if (i % batchSize === 0) {
+                await new Promise(resolve => setTimeout(resolve, 50));
+            }
+        }
+        
+        // Si on a chargé moins de 100 Pokémon, essayer de recharger les manquants
+        if (pokemonList.length < 100 && failedCount < maxFailures) {
+            console.log(`Seulement ${pokemonList.length} Pokémon chargés. Tentative de rechargement des manquants...`);
+            const loadedIds = new Set(pokemonList.map(p => p.id));
+            
+            for (let i = 1; i <= total; i++) {
+                if (!loadedIds.has(i) && pokemonList.length < 150) {
+                    try {
+                        const pokemonData = await this.fetchPokemonData(i, 2); // Moins de retries pour la 2e tentative
+                        if (pokemonData && pokemonData.imageUrl) {
+                            const imageValid = await this.validateImage(pokemonData.imageUrl);
+                            if (imageValid) {
+                                pokemonList.push(pokemonData);
+                            }
+                        }
+                    } catch (error) {
+                        console.warn(`Échec du rechargement pour le Pokémon ${i}`);
+                    }
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                }
             }
         }
         
         this.pokemon = pokemonList;
         this.pokemonLoaded = true;
+        
+        console.log(`Chargement terminé: ${pokemonList.length}/${total} Pokémon chargés`);
         
         // Réinitialiser l'ordre si nécessaire
         if (this.pokemonOrder.length > 0) {
@@ -362,16 +471,53 @@ class PokemonGame extends GameBase {
     /**
      * Valide qu'une image charge correctement
      * @param {string} imageUrl - URL de l'image
+     * @param {number} timeout - Timeout en millisecondes (défaut: 3000)
      * @returns {Promise<boolean>} true si l'image est valide
      */
-    validateImage(imageUrl) {
+    validateImage(imageUrl, timeout = 3000) {
         return new Promise((resolve) => {
+            if (!imageUrl) {
+                resolve(false);
+                return;
+            }
+            
             const img = new Image();
-            img.onload = () => resolve(true);
-            img.onerror = () => resolve(false);
+            let resolved = false;
+            
+            const cleanup = () => {
+                if (!resolved) {
+                    resolved = true;
+                    img.onload = null;
+                    img.onerror = null;
+                }
+            };
+            
+            img.onload = () => {
+                if (!resolved) {
+                    resolved = true;
+                    resolve(true);
+                    cleanup();
+                }
+            };
+            
+            img.onerror = () => {
+                if (!resolved) {
+                    resolved = true;
+                    resolve(false);
+                    cleanup();
+                }
+            };
+            
             img.src = imageUrl;
-            // Timeout après 5 secondes
-            setTimeout(() => resolve(false), 5000);
+            
+            // Timeout plus court pour éviter de bloquer le chargement
+            setTimeout(() => {
+                if (!resolved) {
+                    resolved = true;
+                    resolve(false);
+                    cleanup();
+                }
+            }, timeout);
         });
     }
 
@@ -402,15 +548,23 @@ class PokemonGame extends GameBase {
      */
     renderLoadingScreen() {
         const container = this.getGameContainer();
+        const loadedCount = this.pokemon ? this.pokemon.length : 0;
+        const statusMessage = loadedCount > 0 
+            ? `${loadedCount} Pokémon chargés...` 
+            : 'Connexion à la PokeAPI...';
+        
         container.innerHTML = `
             <div class="loading-screen">
                 <div class="loading-spinner"></div>
                 <h2>Chargement du Challenge Pokémon...</h2>
+                <p>${statusMessage}</p>
                 <p>Récupération des données depuis la PokeAPI (${this.loadingProgress}%)</p>
                 <div class="loading-progress-bar">
                     <div class="loading-progress-fill" style="width: ${this.loadingProgress}%"></div>
                 </div>
                 <p class="loading-note">Cela peut prendre quelques instants...</p>
+                ${this.loadingProgress > 0 && this.loadingProgress < 10 ? 
+                    '<p class="loading-warning">⚠️ Le chargement semble lent. Vérifiez votre connexion internet.</p>' : ''}
             </div>
         `;
     }
