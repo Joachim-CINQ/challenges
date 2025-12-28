@@ -220,6 +220,18 @@ class LanguageGame extends GameBase {
         // Si déjà trouvé, ne rien faire
         if (this.foundLanguages.includes(languageId)) return;
 
+        // Éviter les doubles appels - vérifier si on est déjà en train de traiter cette réponse
+        const answerKey = `${languageId}_${userInput.trim()}`;
+        if (this._processingAnswers && this._processingAnswers.has(answerKey)) {
+            return;
+        }
+        
+        // Initialiser le Set si nécessaire
+        if (!this._processingAnswers) {
+            this._processingAnswers = new Set();
+        }
+        this._processingAnswers.add(answerKey);
+
         // Sauvegarder la réponse de l'utilisateur
         this.userAnswers[languageId] = userInput;
 
@@ -243,6 +255,13 @@ class LanguageGame extends GameBase {
                 this.showFeedback('❌ Incorrect ! (Pas assez de points pour pénalité)', 'error', 2000);
             }
         }
+        
+        // Retirer du Set après un court délai pour permettre les nouvelles tentatives
+        setTimeout(() => {
+            if (this._processingAnswers) {
+                this._processingAnswers.delete(answerKey);
+            }
+        }, 500);
     }
 
     /**
@@ -374,14 +393,25 @@ class LanguageGame extends GameBase {
             const languageId = parseInt(input.getAttribute('data-id'));
             
             // Validation à la perte de focus ou Enter
-            input.addEventListener('blur', () => {
+            // Utiliser un flag pour éviter les doubles appels
+            let isProcessing = false;
+            
+            const handleSubmit = () => {
+                if (isProcessing) return;
+                isProcessing = true;
                 this.handleAnswer(languageId, input.value);
-            });
+                setTimeout(() => {
+                    isProcessing = false;
+                }, 500);
+            };
+            
+            input.addEventListener('blur', handleSubmit);
 
             input.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') {
                     e.preventDefault();
-                    input.blur();
+                    // Ne pas appeler blur() pour éviter le double appel
+                    handleSubmit();
                 }
             });
         });

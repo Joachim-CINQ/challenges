@@ -435,6 +435,25 @@ class MetroGame extends GameBase {
             this.showFeedback('⚠️ Entrez un nom de station', 'error', 2000);
             return;
         }
+        
+        // Éviter les doubles appels
+        const searchKey = userInput.trim().toLowerCase();
+        if (this._processingSearch && this._processingSearch.has(searchKey)) {
+            return;
+        }
+        
+        // Initialiser le Set si nécessaire
+        if (!this._processingSearch) {
+            this._processingSearch = new Set();
+        }
+        this._processingSearch.add(searchKey);
+        
+        // Retirer du Set après un court délai
+        setTimeout(() => {
+            if (this._processingSearch) {
+                this._processingSearch.delete(searchKey);
+            }
+        }, 1000);
 
         if (!this.fuse) {
             // Fallback sans Fuse.js
@@ -665,6 +684,18 @@ class MetroGame extends GameBase {
         if (!feature) return;
 
         if (this.foundStationIds.has(stationId)) return;
+        
+        // Éviter les doubles appels - vérifier si on est déjà en train de traiter cette réponse
+        const answerKey = `${stationId}_${userInput.trim()}`;
+        if (this._processingAnswers && this._processingAnswers.has(answerKey)) {
+            return;
+        }
+        
+        // Initialiser le Set si nécessaire
+        if (!this._processingAnswers) {
+            this._processingAnswers = new Set();
+        }
+        this._processingAnswers.add(answerKey);
 
         this.userAnswers[stationId] = userInput;
         this.foundStationIds.add(stationId);
@@ -686,6 +717,13 @@ class MetroGame extends GameBase {
         } else {
             this.showFeedback(`✅ ${feature.properties.name} trouvée ! +${GameManager.CORRECT_ANSWER_POINTS} points`, 'success', 2000);
         }
+        
+        // Retirer du Set après un court délai pour permettre les nouvelles tentatives
+        setTimeout(() => {
+            if (this._processingAnswers) {
+                this._processingAnswers.delete(answerKey);
+            }
+        }, 500);
     }
 
     /**
@@ -917,9 +955,16 @@ class MetroGame extends GameBase {
         }
 
         if (searchButton) {
+            // Protection contre les doubles clics
+            let isProcessing = false;
             searchButton.addEventListener('click', () => {
+                if (isProcessing) return;
+                isProcessing = true;
                 const value = searchInput?.value || '';
                 this.searchStation(value);
+                setTimeout(() => {
+                    isProcessing = false;
+                }, 1000);
             });
         }
 
