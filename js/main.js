@@ -55,12 +55,15 @@ document.addEventListener('DOMContentLoaded', () => {
     window.pokemonGame = pokemonGame;
 
     // Créer et enregistrer le jeu LogoGame
+    // Désactivé temporairement - code conservé pour réactivation future
+    /*
     const logoGame = new LogoGame();
     logoGame.init();
     gameManager.registerGame('logos', logoGame);
 
     // Exposer logoGame globalement pour les callbacks onclick
     window.logoGame = logoGame;
+    */
 
     // Mettre à jour le menu pour afficher les jeux enregistrés
     gameManager.showMenu();
