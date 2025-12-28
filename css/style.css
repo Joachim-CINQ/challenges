@@ -1155,6 +1155,148 @@ body {
     transform: translateY(0);
 }
 
+/* Styles pour ExpressionsGame */
+.expressions-grid-container {
+    background: var(--bg-secondary);
+    border: 4px solid var(--accent-yellow);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-top: 1rem;
+    max-height: calc(100vh - 250px);
+    overflow-y: auto;
+    box-shadow: 0 4px 12px var(--shadow), 0 0 0 2px var(--accent-blue);
+}
+
+.expressions-grid-container::-webkit-scrollbar {
+    width: 10px;
+}
+
+.expressions-grid-container::-webkit-scrollbar-track {
+    background: var(--bg-tertiary);
+    border-radius: 5px;
+}
+
+.expressions-grid-container::-webkit-scrollbar-thumb {
+    background: var(--accent-primary);
+    border-radius: 5px;
+}
+
+.expressions-grid-container::-webkit-scrollbar-thumb:hover {
+    background: #357abd;
+}
+
+.expressions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2.5rem;
+}
+
+.expression-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 2rem;
+    background: var(--bg-secondary);
+    border: 4px solid var(--accent-yellow);
+    border-radius: 16px;
+    transition: all 0.3s ease;
+    position: relative;
+    box-shadow: 0 4px 12px var(--shadow), 0 0 0 2px var(--accent-blue);
+}
+
+.expression-item:hover {
+    border-color: var(--accent-primary);
+    transform: translateY(-3px) rotate(1deg);
+    box-shadow: 0 6px 16px var(--card-shadow), 0 0 0 3px var(--accent-pink);
+    background: var(--bg-tertiary);
+}
+
+.expression-item.found {
+    background: linear-gradient(135deg, rgba(6, 167, 125, 0.2), rgba(58, 134, 255, 0.2));
+    border-color: var(--accent-secondary);
+    box-shadow: 0 4px 12px var(--shadow), 0 0 0 3px var(--accent-secondary);
+}
+
+.expression-text-display {
+    width: 100%;
+    min-height: 100px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-tertiary);
+    border: 3px solid var(--accent-yellow);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px var(--shadow);
+}
+
+.expression-phrase {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-align: center;
+    margin: 0;
+    line-height: 1.6;
+    font-family: 'Comic Sans MS', 'Chalkboard SE', 'Marker Felt', 'Trebuchet MS', sans-serif;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.expression-text-display .checkmark {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: var(--accent-secondary);
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 900;
+    box-shadow: 0 2px 8px var(--shadow);
+    z-index: 10;
+}
+
+.expression-input {
+    width: 100%;
+    padding: 1rem;
+    background: var(--bg-secondary);
+    border: 4px solid var(--accent-yellow);
+    border-radius: 12px;
+    font-size: 1.4rem;
+    font-family: 'Comic Sans MS', 'Chalkboard SE', 'Marker Felt', 'Trebuchet MS', sans-serif;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px var(--shadow);
+}
+
+.expression-input:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 4px rgba(230, 57, 70, 0.2), 0 4px 12px var(--shadow);
+    background: var(--bg-tertiary);
+}
+
+.expression-input.correct {
+    background: linear-gradient(135deg, rgba(6, 167, 125, 0.3), rgba(58, 134, 255, 0.2));
+    border-color: var(--accent-secondary);
+    color: var(--accent-secondary);
+    font-weight: 900;
+    box-shadow: 0 4px 12px var(--shadow), 0 0 0 3px var(--accent-secondary);
+}
+
+.expression-input:disabled {
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
 .flag-display {
     text-align: center;
     margin-bottom: 2.5rem;
@@ -1709,14 +1851,16 @@ body {
 
     .pokemon-grid,
     .logos-grid,
-    .languages-grid {
+    .languages-grid,
+    .expressions-grid {
         grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
         gap: 1.5rem;
     }
 
     .pokemon-grid-container,
     .logos-grid-container,
-    .languages-grid-container {
+    .languages-grid-container,
+    .expressions-grid-container {
         padding: 1.5rem;
         max-height: calc(100vh - 220px);
     }
@@ -1878,28 +2022,32 @@ body {
 
     .pokemon-grid,
     .logos-grid,
-    .languages-grid {
+    .languages-grid,
+    .expressions-grid {
         grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
         gap: 1rem;
     }
 
     .pokemon-grid-container,
     .logos-grid-container,
-    .languages-grid-container {
+    .languages-grid-container,
+    .expressions-grid-container {
         padding: 1rem;
         max-height: calc(100vh - 200px);
     }
 
     .pokemon-item,
     .logo-item,
-    .language-item {
+    .language-item,
+    .expression-item {
         padding: 1rem;
         gap: 1rem;
     }
 
     .pokemon-input,
     .logo-input,
-    .language-input {
+    .language-input,
+    .expression-input {
         font-size: 1rem;
         padding: 0.8rem;
     }
@@ -2110,14 +2258,16 @@ body {
 
     .pokemon-item,
     .logo-item,
-    .language-item {
+    .language-item,
+    .expression-item {
         padding: 0.8rem;
         gap: 0.8rem;
     }
 
     .pokemon-input,
     .logo-input,
-    .language-input {
+    .language-input,
+    .expression-input {
         font-size: 0.9rem;
         padding: 0.6rem;
     }
@@ -2230,14 +2380,16 @@ body {
 
     .pokemon-item,
     .logo-item,
-    .language-item {
+    .language-item,
+    .expression-item {
         padding: 0.8rem;
         gap: 0.8rem;
     }
 
     .pokemon-input,
     .logo-input,
-    .language-input {
+    .language-input,
+    .expression-input {
         font-size: 0.9rem;
         padding: 0.6rem;
     }
@@ -2269,7 +2421,8 @@ body {
 
     .pokemon-grid,
     .logos-grid,
-    .languages-grid {
+    .languages-grid,
+    .expressions-grid {
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
         gap: 2rem;
     }
@@ -2385,7 +2538,8 @@ body {
 
     .pokemon-grid,
     .logos-grid,
-    .languages-grid {
+    .languages-grid,
+    .expressions-grid {
         grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
         gap: 3rem;
     }
@@ -2393,6 +2547,7 @@ body {
     .pokemon-grid-container,
     .logos-grid-container,
     .languages-grid-container,
+    .expressions-grid-container,
     .flags-grid-container,
     .people-grid-container {
         padding: 3rem;
@@ -2402,6 +2557,7 @@ body {
     .pokemon-item,
     .logo-item,
     .language-item,
+    .expression-item,
     .flag-item,
     .person-item {
         padding: 2.5rem;
@@ -2411,6 +2567,7 @@ body {
     .pokemon-input,
     .logo-input,
     .language-input,
+    .expression-input,
     .flag-input,
     .person-input {
         font-size: 1.8rem;
@@ -2480,11 +2637,13 @@ body {
         border-width: 10px;
     }
 
-    .language-phrase {
+    .language-phrase,
+    .expression-phrase {
         font-size: 2.2rem;
     }
 
-    .language-text-display {
+    .language-text-display,
+    .expression-text-display {
         min-height: 150px;
         padding: 2rem;
     }

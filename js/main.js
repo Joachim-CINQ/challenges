@@ -73,6 +73,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Exposer languageGame globalement pour les callbacks onclick
     window.languageGame = languageGame;
 
+    // Créer et enregistrer le jeu ExpressionsGame
+    const expressionsGame = new ExpressionsGame();
+    expressionsGame.init();
+    gameManager.registerGame('expressions', expressionsGame);
+
+    // Exposer expressionsGame globalement pour les callbacks onclick
+    window.expressionsGame = expressionsGame;
+
     // Mettre à jour le menu pour afficher les jeux enregistrés
     gameManager.showMenu();
 

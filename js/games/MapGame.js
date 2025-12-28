@@ -428,25 +428,33 @@ class MapGame extends GameBase {
             }
 
             // Event listener pour le placement
-            // Utiliser mousedown au lieu de click pour éviter les conflits avec le pan
-            path.addEventListener('mousedown', (e) => {
-                e.stopPropagation(); // Empêcher le pan de se déclencher
-                if (this.selectedCountry && !isPlaced) {
-                    this.placeCountry(this.selectedCountry, countryCode);
-                } else if (!this.selectedCountry) {
-                    this.showFeedback('⚠️ Sélectionnez d\'abord un pays dans la liste', 'error', 2000);
-                }
-            });
+            // Utiliser un flag pour éviter les doubles clics
+            let isProcessing = false;
             
-            // Aussi gérer le click pour compatibilité
-            path.addEventListener('click', (e) => {
+            const handlePlacement = (e) => {
                 e.stopPropagation();
-                if (this.selectedCountry && !isPlaced) {
-                    this.placeCountry(this.selectedCountry, countryCode);
-                } else if (!this.selectedCountry) {
+                e.preventDefault();
+                
+                // Éviter les doubles clics
+                if (isProcessing) return;
+                if (isPlaced) return; // Ne rien faire si déjà placé
+                
+                if (!this.selectedCountry) {
                     this.showFeedback('⚠️ Sélectionnez d\'abord un pays dans la liste', 'error', 2000);
+                    return;
                 }
-            });
+                
+                isProcessing = true;
+                this.placeCountry(this.selectedCountry, countryCode);
+                
+                // Réinitialiser le flag après un court délai
+                setTimeout(() => {
+                    isProcessing = false;
+                }, 500);
+            };
+            
+            // Utiliser mousedown pour éviter les conflits avec le pan
+            path.addEventListener('mousedown', handlePlacement);
 
             // Effet hover
             if (!isPlaced) {
@@ -503,11 +511,18 @@ class MapGame extends GameBase {
             } else {
                 this.showFeedback(`✅ Correct ! +${GameManager.CORRECT_ANSWER_POINTS} points`, 'success', 2000);
             }
-        } else {
+        } else if (selectedCode && mapCode) {
             // Placement incorrect - pénalité de points
-            const pointsLost = 5;
-            if (gameManager.spendPoints(pointsLost)) {
-                this.showFeedback(`❌ Incorrect ! -${pointsLost} points`, 'error', 2000);
+            // Vérifier que le pays sélectionné n'est pas déjà placé
+            if (this.placedCountries.includes(selectedCode)) {
+                this.showFeedback('⚠️ Ce pays est déjà placé !', 'error', 2000);
+                this.selectedCountry = null;
+                return;
+            }
+            
+            const errorCost = gameManager.getErrorCost();
+            if (gameManager.deductErrorPoints()) {
+                this.showFeedback(`❌ Incorrect ! -${errorCost} points`, 'error', 2000);
             } else {
                 // Si le score est déjà à 0 ou insuffisant, juste afficher un message
                 this.showFeedback('❌ Incorrect ! (Pas assez de points pour pénalité)', 'error', 2000);
