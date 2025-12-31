@@ -81,6 +81,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Exposer expressionsGame globalement pour les callbacks onclick
     window.expressionsGame = expressionsGame;
 
+    // Créer et enregistrer le jeu PasswordGame
+    const passwordGame = new PasswordGame();
+    passwordGame.init();
+    gameManager.registerGame('password', passwordGame);
+
+    // Exposer passwordGame globalement pour les callbacks onclick
+    window.passwordGame = passwordGame;
+
     // Mettre à jour le menu pour afficher les jeux enregistrés
     gameManager.showMenu();
 
